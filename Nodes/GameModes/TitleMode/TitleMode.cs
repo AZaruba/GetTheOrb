@@ -28,4 +28,9 @@ public partial class TitleMode : GameMode
     Labels[CurrentLabel].Visible = true;
     CurrentLabel++;
   }
+
+  public void Init()
+  {
+    timer.Start();
+  }
 }

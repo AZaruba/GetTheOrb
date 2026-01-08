@@ -39,7 +39,6 @@ text = "ORB"
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
-autostart = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_right = 24.0

@@ -31,6 +31,10 @@ public partial class LevelUpMode : GameMode
     Labels[CurrentLabel].Visible = true;
     CurrentLabel++;
   }
+  public void Init()
+  {
+    timer.Start();
+  }
 
   public void Reset()
   {

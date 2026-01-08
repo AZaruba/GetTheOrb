@@ -76,7 +76,7 @@ centered = false
 
 [node name="WanderMode" type="Node2D" parent="." node_paths=PackedStringArray("DirectionDisplay", "HPDisplay", "MPDisplay", "StatDisplay")]
 script = ExtResource("5_4el28")
-EncounterMaxSteps = 2
+EncounterMaxSteps = 32
 DirectionDisplay = NodePath("Status/DirVal")
 HPDisplay = NodePath("Status/HPVal")
 MPDisplay = NodePath("Status/MPVal")
@@ -232,13 +232,13 @@ LeftHandSprite = NodePath("../WanderMode/CharDisplay/LeftHand")
 RightHandSprite = NodePath("../WanderMode/CharDisplay/RightHand")
 StatsDisplay = NodePath("../WanderMode/StatOverlay")
 
+[node name="TreasureMode" parent="." instance=ExtResource("14_ujyrv")]
+visible = false
+position = Vector2(24, 24)
+
 [node name="LevelUpMode" parent="." instance=ExtResource("13_ujyrv")]
 visible = false
 z_index = 5
-position = Vector2(24, 24)
-
-[node name="TreasureMode" parent="." instance=ExtResource("14_ujyrv")]
-visible = false
 position = Vector2(24, 24)
 
 [node name="GameOverMode" parent="." instance=ExtResource("15_noh4w")]

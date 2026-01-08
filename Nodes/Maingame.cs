@@ -9,7 +9,7 @@ public partial class Maingame : Node2D
 
   [Export] GameMode WanderMode;
   [Export] GameMode FightMode;
-  [Export] GameMode TitleMode;
+  [Export] TitleMode TitleMode;
   [Export] GameMode CharacterSelectMode;
   [Export] TreasureMode TreasureMode;
   [Export] LevelUpMode LevelUpMode;
@@ -25,6 +25,7 @@ public partial class Maingame : Node2D
   public override void _Ready()
   {
     StartingGameMode = TitleMode;
+    TitleMode.Init();
     CurrentGameMode = StartingGameMode;
     InitSignals();
   }
@@ -71,6 +72,7 @@ public partial class Maingame : Node2D
       return;
     }
     LevelUpMode.Reset();
+    LevelUpMode.Init();
     LevelUpMode.Visible = true;
     CurrentGameMode = LevelUpMode;
   }
