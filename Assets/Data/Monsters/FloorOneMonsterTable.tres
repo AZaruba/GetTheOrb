@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://u283v7cqtdpy"]
+
+[ext_resource type="Resource" uid="uid://2metct8c8iaj" path="res://Assets/Data/Monsters/Slime.tres" id="1_omd0p"]
+[ext_resource type="Resource" uid="uid://vd4ihtwieklq" path="res://Assets/Data/Monsters/Goblin.tres" id="2_k0sov"]
+[ext_resource type="Script" uid="uid://bdvddgot2h104" path="res://Assets/Data/Monsters/MonsterTable.cs" id="3_d7jm6"]
+
+[resource]
+script = ExtResource("3_d7jm6")
+Monsters = Array[Resource]([ExtResource("1_omd0p"), ExtResource("2_k0sov")])
+Weights = PackedFloat32Array(3, 1)

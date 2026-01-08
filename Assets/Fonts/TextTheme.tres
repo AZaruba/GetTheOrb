@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://eaxxee4p30ip"]
+
+[ext_resource type="FontFile" uid="uid://dyv5iwkac666x" path="res://Assets/Fonts/dungeon-mode.ttf" id="1_isrmu"]
+
+[resource]
+default_font = ExtResource("1_isrmu")
+default_font_size = 9

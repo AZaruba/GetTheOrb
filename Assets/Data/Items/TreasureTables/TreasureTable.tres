@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://d1qcva27urhpn"]
+
+[ext_resource type="Script" uid="uid://8nge5h8kn5my" path="res://Assets/Data/Items/TreasureTables/TreasureTable.cs" id="1_e7b1t"]
+
+[resource]
+script = ExtResource("1_e7b1t")
+Items = null

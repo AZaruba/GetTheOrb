@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cck23bx03mo8u"]
+
+[ext_resource type="Texture2D" uid="uid://d0b7oali8lk4i" path="res://Assets/Art/Items/Orb.png" id="1_mdd37"]
+[ext_resource type="Script" uid="uid://cvl672bmpaqcq" path="res://Assets/Data/Items/Item.cs" id="2_b52rj"]
+
+[resource]
+script = ExtResource("2_b52rj")
+Sprite = ExtResource("1_mdd37")
+Wit = 2
+Grit = -1

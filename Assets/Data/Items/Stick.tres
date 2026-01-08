@@ -1,0 +1,8 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://cv08wee8kl4go"]
+
+[ext_resource type="Texture2D" uid="uid://6ubqnmfb42hr" path="res://Assets/Art/Items/Stick.png" id="1_5kefe"]
+[ext_resource type="Script" uid="uid://cvl672bmpaqcq" path="res://Assets/Data/Items/Item.cs" id="1_vi8ng"]
+
+[resource]
+script = ExtResource("1_vi8ng")
+Sprite = ExtResource("1_5kefe")

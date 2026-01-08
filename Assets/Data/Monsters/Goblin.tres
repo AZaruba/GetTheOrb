@@ -1,0 +1,16 @@
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://vd4ihtwieklq"]
+
+[ext_resource type="Texture2D" uid="uid://bp2cdrnjccja2" path="res://Assets/Art/Enemies/Ogre.png" id="1_5yxas"]
+[ext_resource type="Resource" uid="uid://2cfmmkmt5yn" path="res://Assets/Data/Items/TreasureTables/FloorOneTreasureTable.tres" id="2_q2cm1"]
+[ext_resource type="Script" uid="uid://oivvua1xar1e" path="res://Assets/Data/Monsters/Monster.cs" id="2_y351v"]
+
+[resource]
+script = ExtResource("2_y351v")
+Sprite = ExtResource("1_5yxas")
+Wit = 1
+Fit = 2
+Grit = 2
+HP = 7
+EXP = 4
+PrimaryStat = 1
+Treasures = ExtResource("2_q2cm1")

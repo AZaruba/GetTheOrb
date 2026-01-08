@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=5 format=3 uid="uid://2cfmmkmt5yn"]
+
+[ext_resource type="Script" uid="uid://8nge5h8kn5my" path="res://Assets/Data/Items/TreasureTables/TreasureTable.cs" id="1_c3uoc"]
+[ext_resource type="Resource" uid="uid://rnt78vteijhm" path="res://Assets/Data/Items/Sword.tres" id="1_hb6gh"]
+[ext_resource type="Resource" uid="uid://bffptbp0ujxof" path="res://Assets/Data/Items/Shield.tres" id="2_xjpsb"]
+[ext_resource type="Resource" uid="uid://bmcp0fuq2e4x3" path="res://Assets/Data/Items/Lance.tres" id="3_w5fvi"]
+
+[resource]
+script = ExtResource("1_c3uoc")
+Items = Array[Resource]([null, ExtResource("1_hb6gh"), ExtResource("2_xjpsb"), ExtResource("3_w5fvi")])
+Weights = PackedFloat32Array(5, 1, 1, 1)

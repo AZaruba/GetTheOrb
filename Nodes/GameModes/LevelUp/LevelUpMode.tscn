@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://nvxui8icntlc"]
+
+[ext_resource type="Script" uid="uid://b1cd01t02cuxu" path="res://Nodes/GameModes/LevelUp/LevelUpMode.cs" id="1_fn6cq"]
+[ext_resource type="Theme" uid="uid://eaxxee4p30ip" path="res://Assets/Fonts/TextTheme.tres" id="2_5sh57"]
+
+[node name="LevelUpMode" type="Node2D" node_paths=PackedStringArray("Labels", "timer")]
+script = ExtResource("1_fn6cq")
+Labels = [NodePath("Line1"), NodePath("Line2"), NodePath("Line3")]
+timer = NodePath("Timer")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[node name="Line1" type="RichTextLabel" parent="."]
+visible = false
+z_index = 1
+texture_filter = 1
+offset_right = 24.0
+offset_bottom = 8.0
+theme = ExtResource("2_5sh57")
+text = "LEV"
+visible_characters = 3
+visible_characters_behavior = 2
+
+[node name="Line2" type="RichTextLabel" parent="."]
+visible = false
+z_index = 1
+texture_filter = 1
+offset_top = 8.0
+offset_right = 24.0
+offset_bottom = 16.0
+theme = ExtResource("2_5sh57")
+text = "EL"
+visible_characters = 3
+visible_characters_behavior = 2
+visible_ratio = 1.5
+
+[node name="Line3" type="RichTextLabel" parent="."]
+visible = false
+z_index = 1
+texture_filter = 1
+offset_top = 16.0
+offset_right = 24.0
+offset_bottom = 24.0
+theme = ExtResource("2_5sh57")
+text = "UP!"
+visible_characters = 3
+visible_characters_behavior = 2
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="timeout" from="Timer" to="." method="OnTimeInterval"]

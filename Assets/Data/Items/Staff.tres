@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://dvx7grnwyhdaw"]
+
+[ext_resource type="Texture2D" uid="uid://bkwpsgyu8eviw" path="res://Assets/Art/Items/Staff.png" id="1_lt6d0"]
+[ext_resource type="Script" uid="uid://cvl672bmpaqcq" path="res://Assets/Data/Items/Item.cs" id="2_wja43"]
+
+[resource]
+script = ExtResource("2_wja43")
+Sprite = ExtResource("1_lt6d0")
+Wit = 2
+Fit = -2

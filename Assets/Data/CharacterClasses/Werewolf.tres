@@ -1,0 +1,15 @@
+[gd_resource type="Resource" load_steps=3 format=3 uid="uid://b2qryu8l2ur3p"]
+
+[ext_resource type="Texture2D" uid="uid://dw5yyauuhc5yc" path="res://Assets/Art/Characters/wlf.png" id="1_pdppf"]
+[ext_resource type="Script" uid="uid://cfbua2rjb4540" path="res://Assets/Data/CharacterClasses/CharacterClass.cs" id="2_4rfp2"]
+
+[resource]
+script = ExtResource("2_4rfp2")
+Sprite = ExtResource("1_pdppf")
+Name = "WLF"
+BaseWit = 1
+BaseFit = 2
+BaseGrit = 3
+WitOnLevel = PackedInt32Array(0, 0, 1, 0, 1, 0, 1, 0, 0)
+FitOnLevel = PackedInt32Array(0, 1, 0, 1, 0, 0, 0, 0, 0)
+GritOnLevel = PackedInt32Array(1, 1, 1, 0, 0, 0, 0, 0, 0)

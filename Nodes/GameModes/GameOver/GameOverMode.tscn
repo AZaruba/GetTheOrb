@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://ctvvd2fj0m20l"]
+
+[ext_resource type="Theme" uid="uid://eaxxee4p30ip" path="res://Assets/Fonts/TextTheme.tres" id="1_2f2w8"]
+[ext_resource type="Script" uid="uid://cimj8x37vfun8" path="res://Nodes/GameModes/GameOver/GameOverMode.cs" id="1_8k5os"]
+
+[node name="GameOverMode" type="Node2D"]
+visible = false
+texture_filter = 1
+script = ExtResource("1_8k5os")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[node name="GAMEOVER" type="RichTextLabel" parent="."]
+z_index = 3
+use_parent_material = true
+offset_right = 24.0
+offset_bottom = 24.0
+theme = ExtResource("1_2f2w8")
+text = "YOU
+ARE
+OUT"
+scroll_active = false
+metadata/_edit_use_anchors_ = true

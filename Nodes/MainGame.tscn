@@ -1,0 +1,246 @@
+[gd_scene load_steps=17 format=3 uid="uid://b2vrkt8tby4ay"]
+
+[ext_resource type="Script" uid="uid://d3uv6j7cbh8xd" path="res://Nodes/Maingame.cs" id="1_1yki5"]
+[ext_resource type="Texture2D" uid="uid://fmjjhr5q5fbo" path="res://Assets/Art/3x3DungeonSheet.png" id="1_urwsp"]
+[ext_resource type="Shader" uid="uid://d0qbhbid30tcp" path="res://Assets/Shader/crt_shader/CRTShader.gdshader" id="2_1sc01"]
+[ext_resource type="Theme" uid="uid://eaxxee4p30ip" path="res://Assets/Fonts/TextTheme.tres" id="2_1yki5"]
+[ext_resource type="PackedScene" uid="uid://jomdvjl2uyj1" path="res://Nodes/GameModes/CharacterSelect/CharacterSelectMode.tscn" id="2_ujyrv"]
+[ext_resource type="Script" uid="uid://bktpn1e2hrjr8" path="res://Nodes/Dungeon.cs" id="4_h886h"]
+[ext_resource type="Script" uid="uid://dei4is4kcdlo0" path="res://Nodes/GameModes/Wander/WanderMode.cs" id="5_4el28"]
+[ext_resource type="Script" uid="uid://cc2j0vnum1241" path="res://Assets/Data/Player/Player.cs" id="6_4el28"]
+[ext_resource type="PackedScene" uid="uid://bv4s62owhlinn" path="res://Nodes/GameModes/Fight/FightMode.tscn" id="10_tbiig"]
+[ext_resource type="Script" uid="uid://bgocowgx4pyua" path="res://Nodes/StatOverlay.cs" id="11_4el28"]
+[ext_resource type="PackedScene" uid="uid://58lq7a70cqjm" path="res://Nodes/GameModes/TitleMode/TitleMode.tscn" id="13_4jql2"]
+[ext_resource type="PackedScene" uid="uid://nvxui8icntlc" path="res://Nodes/GameModes/LevelUp/LevelUpMode.tscn" id="13_ujyrv"]
+[ext_resource type="PackedScene" uid="uid://dynkmv8wjufmj" path="res://Nodes/GameModes/Treasure/TreasureMode.tscn" id="14_ujyrv"]
+[ext_resource type="PackedScene" uid="uid://ctvvd2fj0m20l" path="res://Nodes/GameModes/GameOver/GameOverMode.tscn" id="15_noh4w"]
+[ext_resource type="PackedScene" uid="uid://c2rpc6k01juw0" path="res://Assets/Data/Player/Player.tscn" id="15_qxkmd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w0e0m"]
+shader = ExtResource("2_1sc01")
+shader_parameter/screen_width = 1024.0
+shader_parameter/screen_height = 600.0
+shader_parameter/BarrelPower = 1.1
+shader_parameter/color_bleeding = 1.2
+shader_parameter/bleeding_range_x = 3.0
+shader_parameter/bleeding_range_y = 3.0
+shader_parameter/lines_distance = 4.0
+shader_parameter/scan_size = 2.0
+shader_parameter/scanline_alpha = 0.9
+shader_parameter/lines_velocity = 30.0
+
+[node name="Base" type="Node2D" node_paths=PackedStringArray("StatDisplay", "DungeonDisplay", "DirectionDisplay", "WanderMode", "FightMode", "TitleMode", "CharacterSelectMode", "TreasureMode", "LevelUpMode", "GameOver")]
+texture_filter = 1
+texture_repeat = 1
+script = ExtResource("1_1yki5")
+StatDisplay = NodePath("WanderMode/StatOverlay")
+DungeonDisplay = NodePath("WanderMode/Dungeon")
+DirectionDisplay = NodePath("WanderMode/Status/DirVal")
+WanderMode = NodePath("WanderMode")
+FightMode = NodePath("FightMode")
+TitleMode = NodePath("TitleMode")
+CharacterSelectMode = NodePath("CharacterSelectMode")
+TreasureMode = NodePath("TreasureMode")
+LevelUpMode = NodePath("LevelUpMode")
+GameOver = NodePath("GameOverMode")
+
+[node name="CharacterSelectMode" parent="." instance=ExtResource("2_ujyrv")]
+visible = false
+z_index = 1
+position = Vector2(24, 24)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 100
+material = SubResource("ShaderMaterial_w0e0m")
+offset_right = 72.0
+offset_bottom = 72.0
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+z_index = -1
+offset_right = 72.0
+offset_bottom = 72.0
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[node name="FightMode" parent="." node_paths=PackedStringArray("EnemySprite", "Direction", "Player") instance=ExtResource("10_tbiig")]
+position = Vector2(32, 32)
+EnemySprite = NodePath("EnemySprite")
+Direction = NodePath("../WanderMode/Status/DirVal")
+Player = NodePath("../Player")
+
+[node name="EnemySprite" type="Sprite2D" parent="FightMode"]
+z_index = 1
+texture_filter = 1
+use_parent_material = true
+centered = false
+
+[node name="WanderMode" type="Node2D" parent="." node_paths=PackedStringArray("DirectionDisplay", "HPDisplay", "MPDisplay", "StatDisplay")]
+script = ExtResource("5_4el28")
+EncounterMaxSteps = 2
+DirectionDisplay = NodePath("Status/DirVal")
+HPDisplay = NodePath("Status/HPVal")
+MPDisplay = NodePath("Status/MPVal")
+StatDisplay = NodePath("StatOverlay")
+
+[node name="Status" type="Node2D" parent="WanderMode"]
+use_parent_material = true
+position = Vector2(24, 24)
+
+[node name="MPVal" type="RichTextLabel" parent="WanderMode/Status"]
+use_parent_material = true
+offset_left = 16.0
+offset_right = 24.0
+offset_bottom = 8.0
+theme = ExtResource("2_1yki5")
+theme_override_colors/default_color = Color(0.45882353, 0.54509807, 0.78039217, 1)
+text = "4"
+metadata/_edit_use_anchors_ = true
+
+[node name="HPVal" type="RichTextLabel" parent="WanderMode/Status"]
+use_parent_material = true
+offset_right = 8.0
+offset_bottom = 8.0
+theme = ExtResource("2_1yki5")
+theme_override_colors/default_color = Color(0.46666667, 0.78039217, 0.46666667, 1)
+text = "5"
+metadata/_edit_use_anchors_ = true
+
+[node name="DirVal" type="RichTextLabel" parent="WanderMode/Status"]
+use_parent_material = true
+offset_left = 8.0
+offset_right = 16.0
+offset_bottom = 8.0
+theme = ExtResource("2_1yki5")
+text = "W"
+metadata/_edit_use_anchors_ = true
+
+[node name="Dungeon" type="Node2D" parent="WanderMode" node_paths=PackedStringArray("LeftSprite", "CenterSprite", "RightSprite")]
+use_parent_material = true
+position = Vector2(24, 24)
+script = ExtResource("4_h886h")
+LeftSprite = NodePath("DunLeft")
+CenterSprite = NodePath("DunCenter")
+RightSprite = NodePath("DunRight")
+
+[node name="DunRight" type="Sprite2D" parent="WanderMode/Dungeon"]
+texture_filter = 1
+use_parent_material = true
+position = Vector2(16, 8)
+texture = ExtResource("1_urwsp")
+centered = false
+hframes = 3
+vframes = 5
+frame = 2
+
+[node name="DunLeft" type="Sprite2D" parent="WanderMode/Dungeon"]
+texture_filter = 1
+use_parent_material = true
+position = Vector2(0, 8)
+texture = ExtResource("1_urwsp")
+centered = false
+hframes = 3
+vframes = 5
+
+[node name="DunCenter" type="Sprite2D" parent="WanderMode/Dungeon"]
+texture_filter = 1
+use_parent_material = true
+position = Vector2(8, 8)
+texture = ExtResource("1_urwsp")
+centered = false
+hframes = 3
+vframes = 5
+frame = 1
+
+[node name="CharDisplay" type="Node2D" parent="WanderMode" node_paths=PackedStringArray("CharSprite", "LeftHandSprite", "RightHandSprite")]
+use_parent_material = true
+position = Vector2(24, 24)
+script = ExtResource("6_4el28")
+CharSprite = NodePath("Portrait")
+LeftHandSprite = NodePath("LeftHand")
+RightHandSprite = NodePath("RightHand")
+
+[node name="Portrait" type="Sprite2D" parent="WanderMode/CharDisplay"]
+texture_filter = 1
+use_parent_material = true
+position = Vector2(8, 16)
+centered = false
+
+[node name="LeftHand" type="Sprite2D" parent="WanderMode/CharDisplay"]
+texture_filter = 1
+use_parent_material = true
+position = Vector2(0, 16)
+centered = false
+
+[node name="RightHand" type="Sprite2D" parent="WanderMode/CharDisplay"]
+texture_filter = 1
+use_parent_material = true
+position = Vector2(16, 16)
+centered = false
+
+[node name="StatOverlay" type="Node2D" parent="WanderMode" node_paths=PackedStringArray("StatDisplay", "LevelDisplay")]
+visible = false
+use_parent_material = true
+position = Vector2(24, 24)
+script = ExtResource("11_4el28")
+StatDisplay = NodePath("StatDisplay")
+LevelDisplay = NodePath("LV")
+
+[node name="ColorRect" type="ColorRect" parent="WanderMode/StatOverlay"]
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[node name="LV" type="RichTextLabel" parent="WanderMode/StatOverlay"]
+z_index = 3
+use_parent_material = true
+offset_right = 24.0
+offset_bottom = 8.0
+theme = ExtResource("2_1yki5")
+text = "Lv1"
+scroll_active = false
+metadata/_edit_use_anchors_ = true
+
+[node name="StatLabel" type="RichTextLabel" parent="WanderMode/StatOverlay"]
+z_index = 3
+use_parent_material = true
+offset_top = 8.0
+offset_right = 24.0
+offset_bottom = 16.0
+theme = ExtResource("2_1yki5")
+bbcode_enabled = true
+text = "[color=77c777]F[/color][color=758bc7]W[/color][color=c77575]G[/color]"
+scroll_active = false
+metadata/_edit_use_anchors_ = true
+
+[node name="StatDisplay" type="RichTextLabel" parent="WanderMode/StatOverlay"]
+z_index = 3
+use_parent_material = true
+offset_top = 16.0
+offset_right = 24.0
+offset_bottom = 24.0
+theme = ExtResource("2_1yki5")
+bbcode_enabled = true
+text = "123"
+metadata/_edit_use_anchors_ = true
+
+[node name="TitleMode" parent="." instance=ExtResource("13_4jql2")]
+position = Vector2(24, 24)
+
+[node name="Player" parent="." node_paths=PackedStringArray("CharSprite", "LeftHandSprite", "RightHandSprite", "StatsDisplay") instance=ExtResource("15_qxkmd")]
+CharSprite = NodePath("../WanderMode/CharDisplay/Portrait")
+LeftHandSprite = NodePath("../WanderMode/CharDisplay/LeftHand")
+RightHandSprite = NodePath("../WanderMode/CharDisplay/RightHand")
+StatsDisplay = NodePath("../WanderMode/StatOverlay")
+
+[node name="LevelUpMode" parent="." instance=ExtResource("13_ujyrv")]
+visible = false
+z_index = 5
+position = Vector2(24, 24)
+
+[node name="TreasureMode" parent="." instance=ExtResource("14_ujyrv")]
+visible = false
+position = Vector2(24, 24)
+
+[node name="GameOverMode" parent="." instance=ExtResource("15_noh4w")]
+z_index = 11
+position = Vector2(24, 24)

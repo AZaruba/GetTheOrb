@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b88at42dmgbj5"]
+
+[ext_resource type="Script" uid="uid://dei4is4kcdlo0" path="res://Nodes/GameModes/Wander/WanderMode.cs" id="1_na5ri"]
+
+[node name="WanderMode" type="Node"]
+script = ExtResource("1_na5ri")
