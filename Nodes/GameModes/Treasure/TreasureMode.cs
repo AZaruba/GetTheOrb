@@ -33,12 +33,14 @@ public partial class TreasureMode : GameMode
       if (Input.IsActionJustPressed(InputAction.LeftHand))
       {
         Visible = false;
+        ItemSprite.Visible = false;
         EventBus.Emit(EventBus.SignalName.OnPickupItem, 1, FoundItem);
         EventBus.Emit(EventBus.SignalName.OnMonsterDefeated, MonsterEXP);
       }
       else if (Input.IsActionJustPressed(InputAction.RightHand))
       {
         Visible = false;
+        ItemSprite.Visible = false;
         EventBus.Emit(EventBus.SignalName.OnPickupItem, 2, FoundItem);
         EventBus.Emit(EventBus.SignalName.OnMonsterDefeated, MonsterEXP);
       }
@@ -48,6 +50,7 @@ public partial class TreasureMode : GameMode
     if (Input.IsActionJustPressed(InputAction.Drop))
     {
         Visible = false;
+        ItemSprite.Visible = false;
         EventBus.Emit(EventBus.SignalName.OnMonsterDefeated, MonsterEXP);
     }
   }
@@ -55,6 +58,9 @@ public partial class TreasureMode : GameMode
   public void OnTreasureFound(int exp, Item item)
   {
     Visible = true;
+    TreasureSprite.Visible = true;
+    TreasureOpened = false;
+    ItemSprite.Visible = false;
     MonsterEXP = exp;
     FoundItem = item;
     ItemSprite.Texture = FoundItem.Sprite;

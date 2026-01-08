@@ -8,4 +8,4 @@
 [resource]
 script = ExtResource("1_c3uoc")
 Items = Array[Resource]([null, ExtResource("1_hb6gh"), ExtResource("2_xjpsb"), ExtResource("3_w5fvi")])
-Weights = PackedFloat32Array(5, 1, 1, 1)
+Weights = PackedFloat32Array(5, 5, 5, 5)

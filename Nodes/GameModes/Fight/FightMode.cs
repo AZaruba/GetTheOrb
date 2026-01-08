@@ -64,10 +64,12 @@ public partial class FightMode : GameMode
       {
         CurrentPhase = PHASE.FIGHT_OVER;
         EnemySprite.Visible = false;
+        Visible = false;
         Item Drop = CurrentMonster.Treasures.RollForItem();
         if (Drop != null)
         {
           EventBus.Emit(EventBus.SignalName.OnTreasureFound, CurrentMonster.EXP, Drop);
+          GD.Print("Say what");
         }
         else
         {
@@ -156,6 +158,7 @@ public partial class FightMode : GameMode
         MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(false), AttackWit, CurrentMonster.Grit);
 
         AttackAnimation.Visible = true;
+        EnemySprite.Visible = false;
         AnimPlayer.Play("AttackAnims/Slash");
         CurrentPhase = PHASE.ANIMATING;
       }
@@ -163,7 +166,6 @@ public partial class FightMode : GameMode
       {
         CurrentPhase = PHASE.DELAYING;
       }
-      CurrentPhase = PHASE.DELAYING;
     }
     if (Input.IsActionJustPressed(InputAction.Defend))
     {
@@ -188,6 +190,7 @@ public partial class FightMode : GameMode
     PlayerDelay = 0;
     MonsterDelay = 0;
     DefendModifier = 0;
+    Visible = true;
 
     EnemySprite.Texture = CurrentMonster.Sprite;
     EnemySprite.Visible = true;
