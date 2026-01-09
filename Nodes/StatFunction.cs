@@ -8,6 +8,7 @@ public static class StatFunction
   {
     float AttackRoll = GD.Randf();
 
+    AttackFit = Math.Max(AttackFit, 1);
     return AttackRoll < (float)AttackFit / (DefendFit + AttackFit);
   }
 

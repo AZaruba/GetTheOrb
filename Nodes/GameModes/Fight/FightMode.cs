@@ -152,7 +152,7 @@ public partial class FightMode : GameMode
     if (Input.IsActionJustPressed(InputAction.RightHand))
     {
       // use left hand item
-      if (StatFunction.CalculateHit(AttackFit + Player.LeftHandItem.Fit, CurrentMonster.Fit))
+      if (StatFunction.CalculateHit(AttackFit + Player.RightHandItem.Fit, CurrentMonster.Fit))
       {
         AttackWit += Player.RightHandItem.Wit;
         MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(false), AttackWit, CurrentMonster.Grit);

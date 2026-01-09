@@ -11,6 +11,8 @@ public partial class WanderMode : GameMode
   [Export] public RichTextLabel HPDisplay;
   [Export] public RichTextLabel MPDisplay;
   [Export] Node2D StatDisplay;
+  [Export] DungeonOverlay LocationDisplay;
+  [Export] Dungeon DungeonDisplay;
 
   private int PlayerPositionX;
   private int PlayerPositionY;
@@ -43,22 +45,45 @@ public partial class WanderMode : GameMode
     }
     else if (CurrentTile == DungeonTile.LADDER_TILE)
     {
+      if (FloorIndex + 1 == DungeonFloor.Floors.Length)
+      {
+        return;
+      }
+
       FloorIndex++;
       CurrentFloor = DungeonFloor.Floors[FloorIndex];
+      DungeonDisplay.SetDungeonColor(FloorIndex);
       PlayerPositionX = CurrentFloor.StartingX;
       PlayerPositionY = CurrentFloor.StartingY;
       PlayerFacing = CurrentFloor.StartingDir;
       DirectionDisplay.Text = Direction.Chars[(int)PlayerFacing];
       EventBus.Emit(EventBus.SignalName.OnLadderEncountered);
+      LocationDisplay.OnFloorChange(FloorIndex);
+    }
+    else if (CurrentTile == DungeonTile.LADDER_UP_TILE)
+    {
+      FloorIndex--;
+      CurrentFloor = DungeonFloor.Floors[FloorIndex];
+      DungeonDisplay.SetDungeonColor(FloorIndex);
+      PlayerPositionX = CurrentFloor.LadderX;
+      PlayerPositionY = CurrentFloor.LadderY;
+      PlayerFacing = CurrentFloor.StartingDir;
+      DirectionDisplay.Text = Direction.Chars[(int)PlayerFacing];
+      EventBus.Emit(EventBus.SignalName.OnLadderEncountered);
+      LocationDisplay.OnFloorChange(FloorIndex);
     }
   }
   public override void ProcessGameMode(double delta)
   {
-    if (Input.IsActionJustPressed(InputAction.Stats))
+    if (!LocationDisplay.Visible && Input.IsActionJustPressed(InputAction.Stats))
     {
       StatDisplay.Visible = !StatDisplay.Visible;
     }
-    if (StatDisplay.Visible)
+    if (!StatDisplay.Visible && Input.IsActionJustPressed(InputAction.Location))
+    {
+      LocationDisplay.Visible = !LocationDisplay.Visible;
+    }
+    if (StatDisplay.Visible || LocationDisplay.Visible)
     {
       return;
     }
@@ -123,7 +148,7 @@ public partial class WanderMode : GameMode
         PlayerPositionX -= 1;
         break;
       case Direction.Facing.EAST:
-        if (PlayerPositionX > CurrentFloor.FloorPlan[0].Length - 1)
+        if (PlayerPositionX > CurrentFloor.FloorPlan.Length - 1)
         {
           return false;
         }
@@ -134,7 +159,7 @@ public partial class WanderMode : GameMode
         PlayerPositionY += 1;
         break;
       case Direction.Facing.SOUTH:
-        if (PlayerPositionY > CurrentFloor.FloorPlan.Length - 1)
+        if (PlayerPositionY > CurrentFloor.FloorPlan[0].Length - 1)
         {
           return false;
         }
@@ -172,11 +197,15 @@ public partial class WanderMode : GameMode
 
   public void OnRetry()
   {
-    CurrentFloor = DungeonFloor.Floors[0];
+    FloorIndex = 0;
+    CurrentFloor = DungeonFloor.Floors[FloorIndex];
+    DungeonDisplay.SetDungeonColor(FloorIndex);
     PlayerPositionX = CurrentFloor.StartingX;
     PlayerPositionY = CurrentFloor.StartingY;
     PlayerFacing = CurrentFloor.StartingDir;
     DirectionDisplay.Text = Direction.Chars[(int)PlayerFacing];
+    LocationDisplay.OnFloorChange(0);
+    LocationDisplay.OnMove(PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
   }
 
   private void OnMove(int x, int y, int d)

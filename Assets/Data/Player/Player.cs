@@ -44,10 +44,10 @@ public partial class Player : Node2D
     CurrentMP = Job.BaseWit;
     EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, CurrentHP, CurrentMP);
 
-    LeftHandItem = ResourceLoader.Load<Item>("res://Assets/Data/Items/Stick.tres");
-    RightHandItem = ResourceLoader.Load<Item>("res://Assets/Data/Items/NULL.tres");
-    LeftHandSprite.Texture = LeftHandItem.Sprite;
+    RightHandItem = ResourceLoader.Load<Item>("res://Assets/Data/Items/Stick.tres");
+    LeftHandItem = ResourceLoader.Load<Item>("res://Assets/Data/Items/NULL.tres");
     RightHandSprite.Texture = RightHandItem.Sprite;
+    LeftHandSprite.Texture = LeftHandItem.Sprite;
   }
 
   public int GetPrimaryStat(bool isLeft)

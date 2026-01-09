@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bcxkd2a05sksu"]
+
+[ext_resource type="Shader" uid="uid://o0xc7txilneb" path="res://Assets/Shader/palette/PaletteSwap.gdshader" id="1_ewohm"]
+
+[resource]
+shader = ExtResource("1_ewohm")
+shader_parameter/original_0 = Color(1, 1, 1, 1)
+shader_parameter/replace_0 = Color(0.54509807, 0.45882353, 0.78039217, 1)

@@ -26,9 +26,12 @@ public partial class Dungeon : Node2D
   [Export] Sprite2D CenterSprite;
   [Export] Sprite2D RightSprite;
 
+  [Export] Color[] DungeonColors;
+
   public override void _Ready()
   {
     EventBus.Instance.OnPlayerMove += OnMove;
+    SetDungeonColor(0);
   }
 
   public void SetLeftSprite(DungeonTile near, DungeonTile far, bool isCorner)
@@ -77,7 +80,7 @@ public partial class Dungeon : Node2D
     {
       CenterSprite.Frame = (int)DungeonSpriteFrame.C_HEALING_CIRCLE;
     }
-    else if (near == DungeonTile.LADDER_TILE)
+    else if (near == DungeonTile.LADDER_TILE || near == DungeonTile.LADDER_UP_TILE)
     {
       CenterSprite.Frame = (int)DungeonSpriteFrame.C_LADDER;
     }
@@ -94,6 +97,7 @@ public partial class Dungeon : Node2D
     }
   }
   public void SetRightSprite(DungeonTile near, DungeonTile far, bool isCorner)
+  
   {
     if (far == DungeonTile.ERR_TILE || isCorner)
     {
@@ -130,6 +134,10 @@ public partial class Dungeon : Node2D
     }
   }
 
+  public void SetDungeonColor(int FloorIndex)
+  {
+    LeftSprite.Material.Set("shader_parameter/replace_0", DungeonColors[FloorIndex]);
+  }
   public void OnMove(int x, int y, int d)
   {
     // calculate Left Right Center based on position
@@ -158,7 +166,7 @@ public partial class Dungeon : Node2D
         cf1 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x][y+1];
         lf1 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x-1][y];
         rf1 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x+1][y];
-        if (y < 6)
+        if (y < WanderMode.CurrentFloor.FloorPlan[0].Length - 2)
         {
           cf2 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x][y+2];
           lf2 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x-1][y+1];
@@ -169,7 +177,7 @@ public partial class Dungeon : Node2D
         cf1 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x+1][y];
         lf1 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x][y+1];
         rf1 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x][y-1];
-        if (x < 6)
+        if (x < WanderMode.CurrentFloor.FloorPlan.Length - 2)
         {
           cf2 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x+2][y];
           lf2 = (DungeonTile)WanderMode.CurrentFloor.FloorPlan[x+1][y+1];

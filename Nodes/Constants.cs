@@ -15,6 +15,7 @@ public partial class InputAction
   public static readonly string Defend = "Defend";
   public static readonly string Evoke = "Evoke";
   public static readonly string Inspect = "Inspect";
+  public static readonly string Location = "Location";
 }
 
 public static class Direction

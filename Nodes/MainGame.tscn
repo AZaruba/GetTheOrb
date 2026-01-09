@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b2vrkt8tby4ay"]
+[gd_scene load_steps=19 format=3 uid="uid://b2vrkt8tby4ay"]
 
 [ext_resource type="Script" uid="uid://d3uv6j7cbh8xd" path="res://Nodes/Maingame.cs" id="1_1yki5"]
 [ext_resource type="Texture2D" uid="uid://fmjjhr5q5fbo" path="res://Assets/Art/3x3DungeonSheet.png" id="1_urwsp"]
@@ -8,8 +8,10 @@
 [ext_resource type="Script" uid="uid://bktpn1e2hrjr8" path="res://Nodes/Dungeon.cs" id="4_h886h"]
 [ext_resource type="Script" uid="uid://dei4is4kcdlo0" path="res://Nodes/GameModes/Wander/WanderMode.cs" id="5_4el28"]
 [ext_resource type="Script" uid="uid://cc2j0vnum1241" path="res://Assets/Data/Player/Player.cs" id="6_4el28"]
+[ext_resource type="Material" uid="uid://bcxkd2a05sksu" path="res://Assets/Shader/palette/PaletteSwap.tres" id="8_noh4w"]
 [ext_resource type="PackedScene" uid="uid://bv4s62owhlinn" path="res://Nodes/GameModes/Fight/FightMode.tscn" id="10_tbiig"]
 [ext_resource type="Script" uid="uid://bgocowgx4pyua" path="res://Nodes/StatOverlay.cs" id="11_4el28"]
+[ext_resource type="Script" uid="uid://blbk667ta1j0o" path="res://Nodes/Info/DungeonOverlay.cs" id="12_gahht"]
 [ext_resource type="PackedScene" uid="uid://58lq7a70cqjm" path="res://Nodes/GameModes/TitleMode/TitleMode.tscn" id="13_4jql2"]
 [ext_resource type="PackedScene" uid="uid://nvxui8icntlc" path="res://Nodes/GameModes/LevelUp/LevelUpMode.tscn" id="13_ujyrv"]
 [ext_resource type="PackedScene" uid="uid://dynkmv8wjufmj" path="res://Nodes/GameModes/Treasure/TreasureMode.tscn" id="14_ujyrv"]
@@ -74,13 +76,16 @@ texture_filter = 1
 use_parent_material = true
 centered = false
 
-[node name="WanderMode" type="Node2D" parent="." node_paths=PackedStringArray("DirectionDisplay", "HPDisplay", "MPDisplay", "StatDisplay")]
+[node name="WanderMode" type="Node2D" parent="." node_paths=PackedStringArray("DirectionDisplay", "HPDisplay", "MPDisplay", "StatDisplay", "LocationDisplay", "DungeonDisplay")]
 script = ExtResource("5_4el28")
 EncounterMaxSteps = 32
+EncounterRateIncreasePerStep = 1
 DirectionDisplay = NodePath("Status/DirVal")
 HPDisplay = NodePath("Status/HPVal")
 MPDisplay = NodePath("Status/MPVal")
 StatDisplay = NodePath("StatOverlay")
+LocationDisplay = NodePath("DungeonOverlay")
+DungeonDisplay = NodePath("Dungeon")
 
 [node name="Status" type="Node2D" parent="WanderMode"]
 use_parent_material = true
@@ -121,10 +126,11 @@ script = ExtResource("4_h886h")
 LeftSprite = NodePath("DunLeft")
 CenterSprite = NodePath("DunCenter")
 RightSprite = NodePath("DunRight")
+DungeonColors = PackedColorArray(0.54509807, 0.45882353, 0.78039217, 1, 0.75686276, 0.78039217, 0.45882353, 1, 0.46666667, 0.78039217, 0.7294118, 1)
 
 [node name="DunRight" type="Sprite2D" parent="WanderMode/Dungeon"]
 texture_filter = 1
-use_parent_material = true
+material = ExtResource("8_noh4w")
 position = Vector2(16, 8)
 texture = ExtResource("1_urwsp")
 centered = false
@@ -134,7 +140,7 @@ frame = 2
 
 [node name="DunLeft" type="Sprite2D" parent="WanderMode/Dungeon"]
 texture_filter = 1
-use_parent_material = true
+material = ExtResource("8_noh4w")
 position = Vector2(0, 8)
 texture = ExtResource("1_urwsp")
 centered = false
@@ -143,7 +149,7 @@ vframes = 5
 
 [node name="DunCenter" type="Sprite2D" parent="WanderMode/Dungeon"]
 texture_filter = 1
-use_parent_material = true
+material = ExtResource("8_noh4w")
 position = Vector2(8, 8)
 texture = ExtResource("1_urwsp")
 centered = false
@@ -221,6 +227,42 @@ offset_bottom = 24.0
 theme = ExtResource("2_1yki5")
 bbcode_enabled = true
 text = "123"
+metadata/_edit_use_anchors_ = true
+
+[node name="DungeonOverlay" type="Node2D" parent="WanderMode" node_paths=PackedStringArray("FloorDisplay", "PositionDisplay")]
+visible = false
+use_parent_material = true
+position = Vector2(24, 24)
+script = ExtResource("12_gahht")
+FloorDisplay = NodePath("FloorDisplay")
+PositionDisplay = NodePath("PositionDisplay")
+
+[node name="ColorRect" type="ColorRect" parent="WanderMode/DungeonOverlay"]
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
+
+[node name="FloorDisplay" type="RichTextLabel" parent="WanderMode/DungeonOverlay"]
+z_index = 3
+use_parent_material = true
+offset_right = 24.0
+offset_bottom = 8.0
+theme = ExtResource("2_1yki5")
+text = "F 1"
+scroll_active = false
+metadata/_edit_use_anchors_ = true
+
+[node name="PositionDisplay" type="RichTextLabel" parent="WanderMode/DungeonOverlay"]
+z_index = 3
+use_parent_material = true
+offset_top = 8.0
+offset_right = 24.0
+offset_bottom = 24.0
+theme = ExtResource("2_1yki5")
+bbcode_enabled = true
+text = "X 2
+Y10"
+scroll_active = false
 metadata/_edit_use_anchors_ = true
 
 [node name="TitleMode" parent="." instance=ExtResource("13_4jql2")]
