@@ -41,6 +41,10 @@ public partial class Maingame : Node2D
     {
       GetTree().Quit();
     }
+    if (Input.IsActionJustPressed("Exit"))
+    {
+      GetTree().Quit();
+    }
     CurrentGameMode.ProcessGameMode(delta);
   }
 
