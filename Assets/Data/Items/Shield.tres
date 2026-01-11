@@ -8,3 +8,4 @@ script = ExtResource("2_4mdqm")
 Sprite = ExtResource("1_vvaq5")
 Defense = 2
 Weight = 2
+Type = 3

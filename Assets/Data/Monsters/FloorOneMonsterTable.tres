@@ -7,4 +7,4 @@
 [resource]
 script = ExtResource("3_d7jm6")
 Monsters = Array[Resource]([ExtResource("1_omd0p"), ExtResource("2_k0sov")])
-Weights = PackedFloat32Array(3, 100)
+Weights = PackedFloat32Array(3, 1)

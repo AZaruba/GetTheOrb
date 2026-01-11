@@ -1,8 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://bv4s62owhlinn"]
+[gd_scene load_steps=17 format=3 uid="uid://bv4s62owhlinn"]
 
 [ext_resource type="Script" uid="uid://dejxnf6sacwb4" path="res://Nodes/GameModes/Fight/FightMode.cs" id="1_r2j46"]
 [ext_resource type="Texture2D" uid="uid://c54mhg2lw85uk" path="res://Assets/Art/Anims/Slash/Slash.png" id="2_gnqve"]
 [ext_resource type="Texture2D" uid="uid://mwnraw6t7l8v" path="res://Assets/Art/Anims/Enemy/EnemyAttack.png" id="3_jhmi3"]
+[ext_resource type="Texture2D" uid="uid://culexg6ell6me" path="res://Assets/Art/Anims/Blunt/Blunt.png" id="4_mhkar"]
+[ext_resource type="Texture2D" uid="uid://6e0oqm6mt87v" path="res://Assets/Art/Anims/Pierce/Pierce.png" id="5_j6ou8"]
+[ext_resource type="Texture2D" uid="uid://veo2kbkqngoi" path="res://Assets/Art/Anims/Miss/Miss.png" id="6_htkwb"]
 
 [sub_resource type="Animation" id="Animation_jhmi3"]
 length = 0.001
@@ -30,39 +33,34 @@ tracks/1/keys = {
 "update": 1,
 "values": [4]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("PlayerAttackAnim:texture")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_gnqve")]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("EnemyAttackAnim:texture")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_jhmi3")]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_w83be"]
 _data = {
 &"RESET": SubResource("Animation_jhmi3")
-}
-
-[sub_resource type="Animation" id="Animation_5dnwy"]
-length = 0.3
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerAttackAnim:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.060000002, 0.120000005, 0.18, 0.24000001),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4]
-}
-
-[sub_resource type="Animation" id="Animation_mhkar"]
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("PlayerAttackAnim:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
 }
 
 [sub_resource type="Animation" id="Animation_w83be"]
@@ -80,11 +78,181 @@ tracks/0/keys = {
 "update": 1,
 "values": [0, 1, 2, 3, 3]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EnemyAttackAnim:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_jhmi3")]
+}
+
+[sub_resource type="Animation" id="Animation_mhkar"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerAttackAnim:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+
+[sub_resource type="Animation" id="Animation_5dnwy"]
+resource_name = "Slash"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerAttackAnim:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.060000002, 0.120000005, 0.18, 0.24000001),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerAttackAnim:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_gnqve")]
+}
+
+[sub_resource type="Animation" id="Animation_ssjf8"]
+resource_name = "Blunt"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerAttackAnim:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.060000002, 0.120000005, 0.18, 0.24000001),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerAttackAnim:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_mhkar")]
+}
+
+[sub_resource type="Animation" id="Animation_weqco"]
+resource_name = "Pierce"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerAttackAnim:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.060000002, 0.120000005, 0.18, 0.24000001),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerAttackAnim:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("5_j6ou8")]
+}
+
+[sub_resource type="Animation" id="Animation_g0gnj"]
+resource_name = "EnemyMiss"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EnemyAttackAnim:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06, 0.12, 0.18, 0.24),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EnemyAttackAnim:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_htkwb")]
+}
+
+[sub_resource type="Animation" id="Animation_pyp2k"]
+resource_name = "Miss"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PlayerAttackAnim:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.060000002, 0.120000005, 0.18, 0.24000001),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("PlayerAttackAnim:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_htkwb")]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_j6ou8"]
 _data = {
+&"Blunt": SubResource("Animation_ssjf8"),
 &"Enemy": SubResource("Animation_w83be"),
+&"EnemyMiss": SubResource("Animation_g0gnj"),
 &"Idle": SubResource("Animation_mhkar"),
+&"Miss": SubResource("Animation_pyp2k"),
+&"Pierce": SubResource("Animation_weqco"),
 &"Slash": SubResource("Animation_5dnwy")
 }
 

@@ -6,5 +6,4 @@
 [resource]
 script = ExtResource("2_b52rj")
 Sprite = ExtResource("1_mdd37")
-Wit = 2
-Grit = -1
+Type = 4

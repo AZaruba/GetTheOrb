@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using Godot.Collections;
+using System.Reflection.Metadata;
 
 public partial class InputAction
 {
@@ -28,4 +30,26 @@ public static class Direction
     WEST
   }
    public static string[] Chars = ["N","E","S","W"];
+}
+  public enum AttackType
+  {
+    ERR_ATK,
+    SLASH,
+    PIERCE,
+    BLUNT,
+    MAGIC,
+    MISS,
+    ENEMY
+  }
+
+public static class Anim
+{
+  public static readonly Dictionary<AttackType, string> AttackStrings = new()
+  {
+    { AttackType.SLASH, "AttackAnims/Slash"},
+    { AttackType.BLUNT, "AttackAnims/Blunt"},
+    { AttackType.PIERCE, "AttackAnims/Pierce"},
+    { AttackType.MISS, "AttackAnims/Miss"},
+    { AttackType.ENEMY, "AttackAnims/Enemy"}
+  };
 }

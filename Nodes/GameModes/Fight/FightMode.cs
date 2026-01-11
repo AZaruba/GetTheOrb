@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.ComponentModel;
 
 public partial class FightMode : GameMode
 {
@@ -119,7 +117,7 @@ public partial class FightMode : GameMode
     if (StatFunction.CalculateHit(CurrentMonster.Fit, PlayerDodge))
     {
       int PlayerDefense = Player.Job.Grit + Player.LeftHandItem.Defense + Player.RightHandItem.Defense;
-      Player.CurrentHP -= StatFunction.CalculateDamage(CurrentMonster.GetPrimaryStat(), CurrentMonster.Wit, PlayerDefense, false);
+      Player.CurrentHP -= StatFunction.CalculateDamage(CurrentMonster.GetPrimaryStat(), CurrentMonster.Wit, PlayerDefense, AttackType.ENEMY, false);
       EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, Player.CurrentHP, Player.CurrentMP);
 
       EnemyAttackAnimation.Visible = true;
@@ -128,7 +126,9 @@ public partial class FightMode : GameMode
     }
     else
     {
-      CurrentPhase = PHASE.DELAYING;
+      EnemyAttackAnimation.Visible = true;
+      AnimPlayer.Play("AttackAnims/EnemyMiss");
+      CurrentPhase = PHASE.ANIMATING;
     }
   }
 
@@ -141,16 +141,19 @@ public partial class FightMode : GameMode
       // use left hand item
       if (StatFunction.CalculateHit(AttackFit - Player.LeftHandItem.Weight, CurrentMonster.Fit))
       {
-        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(true) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit);
+        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(true) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit, Player.LeftHandItem.Type);
 
         AttackAnimation.Visible = true;
         EnemySprite.Visible = false;
-        AnimPlayer.Play("AttackAnims/Slash");
+        AnimPlayer.Play(Anim.AttackStrings[Player.LeftHandItem.Type]);
         CurrentPhase = PHASE.ANIMATING;
       }
       else
       {
-        CurrentPhase = PHASE.DELAYING;
+        AttackAnimation.Visible = true;
+        EnemySprite.Visible = false;
+        AnimPlayer.Play("AttackAnims/Miss");
+        CurrentPhase = PHASE.ANIMATING;
       }
     }
     if (Input.IsActionJustPressed(InputAction.RightHand))
@@ -158,16 +161,19 @@ public partial class FightMode : GameMode
       // use left hand item
       if (StatFunction.CalculateHit(AttackFit - Player.RightHandItem.Weight, CurrentMonster.Fit))
       {
-        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(false) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit);
+        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(false) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit, Player.RightHandItem.Type);
 
         AttackAnimation.Visible = true;
         EnemySprite.Visible = false;
-        AnimPlayer.Play("AttackAnims/Slash");
+        AnimPlayer.Play(Anim.AttackStrings[Player.RightHandItem.Type]);
         CurrentPhase = PHASE.ANIMATING;
       }
       else
       {
-        CurrentPhase = PHASE.DELAYING;
+        AttackAnimation.Visible = true;
+        EnemySprite.Visible = false;
+        AnimPlayer.Play("AttackAnims/Miss");
+        CurrentPhase = PHASE.ANIMATING;
       }
     }
     if (Input.IsActionJustPressed(InputAction.Defend))

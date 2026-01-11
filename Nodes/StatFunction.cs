@@ -12,7 +12,7 @@ public static class StatFunction
     return AttackRoll < (float)AttackFit / (DefendFit + AttackFit);
   }
 
-  public static int CalculateDamage(int AttackPower, int AttackWit, int DefendGrit, bool Player = true)
+  public static int CalculateDamage(int AttackPower, int AttackWit, int DefendGrit, AttackType type, bool Player = true)
   {
     int AttackRoll = GD.RandRange(0,AttackPower+1);
     int damage = Mathf.FloorToInt((float)AttackRoll / ((DefendGrit + 9) / 9));
