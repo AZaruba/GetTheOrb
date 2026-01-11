@@ -5,7 +5,7 @@ using System;
 public partial class Player : Node2D
 {
   public CharacterClass Job;
-  public Array<int> LevelCurve = [0,8,20,36,60,108,172,256,356,900];
+  public Array<int> LevelCurve = [12,36,108,256,512,900,1800,3200,6400];
 
   [Export] public Sprite2D CharSprite;
   [Export] public Sprite2D LeftHandSprite;
@@ -20,8 +20,8 @@ public partial class Player : Node2D
   public Item RightHandItem;
 
   public int EXP = 0;
-  public int Level = 1;
-  public int MaxLevel = 9;
+  public int Level = 0; //1
+  public int MaxLevel = 8;//9
 
   public override void _Ready()
   {
@@ -32,6 +32,15 @@ public partial class Player : Node2D
     EventBus.Instance.OnRetry += OnRetry;
   }
 
+  public override void _ExitTree()
+  {
+    EventBus.Instance.OnMonsterDefeated -= OnMonsterDefeated;
+    EventBus.Instance.OnPickupItem -= EquipItem;
+    EventBus.Instance.OnSelectCharacter -= OnCharacterSelected;
+    EventBus.Instance.OnHealingTileEncountered -= OnHealingTileEncounter;
+    EventBus.Instance.OnRetry -= OnRetry;
+  }
+
   public void OnCharacterSelected(CharacterClass chrClass)
   {
     Job = chrClass;
@@ -40,7 +49,7 @@ public partial class Player : Node2D
     Job.Grit = Job.BaseGrit;
     CharSprite.Texture = Job.Sprite;
 
-    CurrentHP = Job.BaseGrit;
+    CurrentHP = Job.HPOnLevel[Level];
     CurrentMP = Job.BaseWit;
     EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, CurrentHP, CurrentMP);
 
@@ -54,21 +63,21 @@ public partial class Player : Node2D
   {
     if (Job.PrimaryStat == CharacterClass.Stat.WIT)
     {
-      return Job.Wit + (isLeft ? LeftHandItem.Wit : RightHandItem.Wit);
+      return Job.Wit;
     }
     else if (Job.PrimaryStat == CharacterClass.Stat.FIT)
     {
-      return Job.Fit + (isLeft ? LeftHandItem.Fit : RightHandItem.Fit);
+      return Job.Fit;
     }
     else
     {
-      return Job.Grit + (isLeft ? LeftHandItem.Grit : RightHandItem.Grit);
+      return Job.Grit;
     }
   }
 
   public void OnHealingTileEncounter()
   {
-    CurrentHP = Job.Grit;
+    CurrentHP = Job.HPOnLevel[Level];
     CurrentMP = Job.Wit;
     EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, CurrentHP, CurrentMP);
   }
@@ -79,15 +88,17 @@ public partial class Player : Node2D
     if (EXP >= LevelCurve[Level] && Level < MaxLevel)
     {
       Level++;
-      Job.Fit += Job.FitOnLevel[Level];
-      Job.Wit += Job.WitOnLevel[Level];
-      Job.Grit += Job.GritOnLevel[Level];
+      GD.Print(Job.GritOnLevel[Level]);
+      Job.Fit = Job.FitOnLevel[Level];
+      Job.Wit = Job.WitOnLevel[Level];
+      Job.Grit = Job.GritOnLevel[Level];
 
-      CurrentHP = Job.Grit;
+      CurrentHP = Job.HPOnLevel[Level];
       CurrentMP = Job.Wit;
       EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, CurrentHP, CurrentMP);
       EventBus.Instance.EmitSignal(EventBus.SignalName.OnLevelUp, Level, Job.Fit, Job.Wit, Job.Grit);
-    } else
+    }
+    else
     {
       EventBus.Instance.EmitSignal(EventBus.SignalName.OnAdvanceFromLevelUp);
     }
@@ -109,7 +120,7 @@ public partial class Player : Node2D
 
   private void OnRetry()
   {
-    CurrentHP = Job.Grit;
+    CurrentHP = Job.HPOnLevel[Level];
     CurrentMP = Job.Wit;
     EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, CurrentHP, CurrentMP);
   }

@@ -16,6 +16,10 @@ public static class StatFunction
   {
     int AttackRoll = GD.RandRange(0,AttackPower+1);
     int damage = Mathf.FloorToInt((float)AttackRoll / ((DefendGrit + 9) / 9));
+    if (!Player)
+    {
+    GD.Print($"Rolled {AttackRoll} but hit for {damage}");
+    }
     float CritRoll = GD.Randf();
     if (CritRoll < AttackWit/Mathf.Max(9.0f, AttackWit+1) * 0.3f)
     {
@@ -37,7 +41,7 @@ public static class StatFunction
     if (!Player)
     {
       // cap early damage using some function
-      damage = Math.Min(Mathf.CeilToInt((WanderMode.FloorIndex+1)/2),damage);
+      damage = Math.Min(Mathf.CeilToInt((float)(WanderMode.FloorIndex+1)/2),damage);
     }
 
     GD.Print("Hit For " + damage + " Damage");

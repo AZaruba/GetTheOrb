@@ -16,6 +16,11 @@ public partial class DungeonOverlay : Node2D
       EventBus.Instance.OnPlayerMove += OnMove;
 	}
 
+  public override void _ExitTree()
+  {
+      EventBus.Instance.OnPlayerMove -= OnMove;
+  }
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
@@ -23,7 +28,7 @@ public partial class DungeonOverlay : Node2D
 
 	public void OnMove(int x, int y, int d)
 	{
-		PositionDisplay.Text = "X" + $"{x}".PadLeft(2, ' ') + "\nY" + $"{y}".PadLeft(2, ' ');
+		PositionDisplay.Text = "X" + $"{y}".PadLeft(2, ' ') + "\nY" + $"{x}".PadLeft(2, ' ');
 	}
 
 	public void OnFloorChange(int floor)

@@ -6,4 +6,4 @@
 [resource]
 script = ExtResource("2_v8mmn")
 Sprite = ExtResource("1_t6gnw")
-Fit = 1
+Attack = 1

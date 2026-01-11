@@ -15,14 +15,15 @@ public partial class StatOverlay : Node2D
   {
     EventBus.Instance.OnLevelUp += SetStatDisplay;
   }
+
+  public override void _ExitTree()
+  {
+    EventBus.Instance.OnLevelUp -= SetStatDisplay;
+  }
   
   public void SetStatDisplay(int Level, int Fit, int Wit, int Grit)
   {
-    if (Level == 0)
-    {
-      Level = 1;
-    }
-    LevelDisplay.Text = $"Lv{Level}";
+    LevelDisplay.Text = $"Lv{Level+1}";
     StatDisplay.Text = $"{FIT}{Fit}{BBCLOSE}{WIT}{Wit}{BBCLOSE}{GRIT}{Grit}{BBCLOSE}";
   }
 }

@@ -8,7 +8,7 @@
 script = ExtResource("2_y351v")
 Sprite = ExtResource("1_5yxas")
 Wit = 1
-Fit = 2
+Fit = 1
 Grit = 2
 HP = 7
 EXP = 4

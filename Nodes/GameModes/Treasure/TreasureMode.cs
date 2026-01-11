@@ -51,6 +51,10 @@ public partial class TreasureMode : GameMode
     {
         Visible = false;
         ItemSprite.Visible = false;
+        if (TreasureOpened == false)
+        {
+          MonsterEXP = Mathf.CeilToInt(MonsterEXP * 1.5f);
+        }
         EventBus.Emit(EventBus.SignalName.OnMonsterDefeated, MonsterEXP);
     }
   }
@@ -64,6 +68,6 @@ public partial class TreasureMode : GameMode
     MonsterEXP = exp;
     FoundItem = item;
     ItemSprite.Texture = FoundItem.Sprite;
-    InspectLayer.Populate(item.Fit, item.Wit, item.Grit);
+    InspectLayer.Populate(item.Attack, item.Defense, item.Weight);
   }
 }

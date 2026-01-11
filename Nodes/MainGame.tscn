@@ -176,6 +176,7 @@ texture_filter = 1
 use_parent_material = true
 position = Vector2(0, 16)
 centered = false
+flip_h = true
 
 [node name="RightHand" type="Sprite2D" parent="WanderMode/CharDisplay"]
 texture_filter = 1

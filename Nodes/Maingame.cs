@@ -34,7 +34,8 @@ public partial class Maingame : Node2D
   {
     if (Input.IsActionJustPressed("DEBUG_RESET"))
     {
-      GetTree().ReloadCurrentScene();
+      GetTree().ChangeSceneToFile("res://Nodes/MainGame.tscn");
+      return;
     }
     if (Input.IsActionJustPressed("DEBUG_QUIT"))
     {
@@ -61,6 +62,7 @@ public partial class Maingame : Node2D
 
   private void OnRetry()
   {
+    FightMode.Visible = false;
     GameOver.Visible = false;
     CurrentGameMode = WanderMode;
   }
@@ -112,5 +114,19 @@ public partial class Maingame : Node2D
     EventBus.Instance.OnLevelUp += OnLevelUp;
     EventBus.Instance.OnTreasureFound += OnTreasureFound;
     EventBus.Instance.OnGameOver += OnGameOver;
+    EventBus.Instance.OnRetry += OnRetry;
+  }
+
+  public override void _ExitTree()
+  {
+    EventBus.Instance.OnMonsterEncountered -= OnMonsterEncountered;
+    EventBus.Instance.OnMonsterDefeated -= OnMonsterDefeated;
+    EventBus.Instance.OnAdvanceFromTitle -= OnAdvanceFromTitle;
+    EventBus.Instance.OnSelectCharacter -= OnCharacterSelected;
+    EventBus.Instance.OnAdvanceFromLevelUp -= OnLevelUpAdvance;
+    EventBus.Instance.OnLevelUp -= OnLevelUp;
+    EventBus.Instance.OnTreasureFound -= OnTreasureFound;
+    EventBus.Instance.OnGameOver -= OnGameOver;
+    EventBus.Instance.OnRetry -= OnRetry;
   }
 }

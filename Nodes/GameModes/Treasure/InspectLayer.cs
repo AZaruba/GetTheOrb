@@ -3,19 +3,19 @@ using System;
 
 public partial class InspectLayer : Node2D
 {
-  [Export] RichTextLabel FitLabel;
-  [Export] RichTextLabel WitLabel;
-  [Export] RichTextLabel GritLabel;
+  [Export] RichTextLabel AttackLabel;
+  [Export] RichTextLabel DefenseLabel;
+  [Export] RichTextLabel WeightLabel;
 
-  private const string WIT = "[color=758bc7]";
-  private const string FIT = "[color=77c777]";
-  private const string GRIT = "[color=c77575]";
+  private const string ATT = "[color=77c7ba]";
+  private const string DEF = "[color=b575c7]";
+  private const string WEIGHT = "[color=c7a175]";
   private const string BBCLOSE = "[/color]";
 
-  public void Populate(int fit, int wit, int grit)
+  public void Populate(int attack, int defense, int weight)
   {
-    WitLabel.Text = $"{WIT}W" + $"{wit}".PadLeft(2, ' ') + BBCLOSE;
-    FitLabel.Text = $"{FIT}F" + $"{fit}".PadLeft(2, ' ') + BBCLOSE;
-    GritLabel.Text = $"{GRIT}G" + $"{grit}".PadLeft(2, ' ') + BBCLOSE;
+    AttackLabel.Text = $"{ATT}A" + $"{attack}".PadLeft(2, ' ') + BBCLOSE;
+    DefenseLabel.Text = $"{DEF}D" + $"{defense}".PadLeft(2, ' ') + BBCLOSE;
+    WeightLabel.Text = $"{WEIGHT}W" + $"{weight}".PadLeft(2, ' ') + BBCLOSE;
   }
 }

@@ -30,12 +30,19 @@ public partial class WanderMode : GameMode
     DirectionDisplay.Text = Direction.Chars[(int)PlayerFacing];
     EventBus.Instance.OnMonsterDefeated += OnCombatOver;
     EventBus.Instance.OnUpdateHPMP += OnUpdateHPMP;
+    EventBus.Instance.OnRetry += OnRetry;
 
     EventBus.Emit(EventBus.SignalName.OnPlayerMove, PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
 
     PlayerSteps = 0;
   }
 
+  public override void _ExitTree()
+  {
+    EventBus.Instance.OnMonsterDefeated -= OnCombatOver;
+    EventBus.Instance.OnUpdateHPMP -= OnUpdateHPMP;
+    EventBus.Instance.OnRetry -= OnRetry;
+  }
   private void CheckTile()
   {
     DungeonTile CurrentTile = (DungeonTile)CurrentFloor.FloorPlan[PlayerPositionX][PlayerPositionY];
@@ -72,6 +79,11 @@ public partial class WanderMode : GameMode
       EventBus.Emit(EventBus.SignalName.OnLadderEncountered);
       LocationDisplay.OnFloorChange(FloorIndex);
     }
+    else
+    {
+    
+      OnMove(PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
+    }
   }
   public override void ProcessGameMode(double delta)
   {
@@ -93,7 +105,6 @@ public partial class WanderMode : GameMode
       if (ProcessMoveFoward())
       {
         CheckTile();
-        OnMove(PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
         EventBus.Emit(EventBus.SignalName.OnPlayerMove, PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
       }
     }
@@ -116,6 +127,7 @@ public partial class WanderMode : GameMode
       ProcessTurn(false);
       ProcessTurn(false);
       EventBus.Emit(EventBus.SignalName.OnPlayerMove, PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
+      DirectionDisplay.Text = Direction.Chars[(int)PlayerFacing];
     }
   }
 

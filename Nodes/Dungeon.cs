@@ -34,6 +34,11 @@ public partial class Dungeon : Node2D
     SetDungeonColor(0);
   }
 
+  public override void _ExitTree()
+  {
+    EventBus.Instance.OnPlayerMove -= OnMove;
+  }
+
   public void SetLeftSprite(DungeonTile near, DungeonTile far, bool isCorner)
   {
     if (far == DungeonTile.ERR_TILE || isCorner)

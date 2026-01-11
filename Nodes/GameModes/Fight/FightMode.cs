@@ -39,6 +39,10 @@ public partial class FightMode : GameMode
     EventBus.Instance.OnMonsterEncountered += OnMonsterEncountered;
     CurrentMonsterTable = ResourceLoader.Load<MonsterTable>("res://Assets/Data/Monsters/FloorOneMonsterTable.tres");
   }
+  public override void _ExitTree()
+  {
+    EventBus.Instance.OnMonsterEncountered -= OnMonsterEncountered;
+  }
   public override void ProcessGameMode(double delta)
   {
     if (Player.CurrentHP <= 0)
@@ -69,7 +73,6 @@ public partial class FightMode : GameMode
         if (Drop != null)
         {
           EventBus.Emit(EventBus.SignalName.OnTreasureFound, CurrentMonster.EXP, Drop);
-          GD.Print("Say what");
         }
         else
         {
@@ -112,9 +115,11 @@ public partial class FightMode : GameMode
   {
     // monster logic goes here
 
-    if (StatFunction.CalculateHit(CurrentMonster.Fit, Player.Job.Fit + DefendModifier))
+    int PlayerDodge = Player.Job.Fit - Player.LeftHandItem.Weight - Player.RightHandItem.Weight + DefendModifier;
+    if (StatFunction.CalculateHit(CurrentMonster.Fit, PlayerDodge))
     {
-      Player.CurrentHP -= StatFunction.CalculateDamage(CurrentMonster.GetPrimaryStat(), CurrentMonster.Wit, CurrentMonster.Grit, false);
+      int PlayerDefense = Player.Job.Grit + Player.LeftHandItem.Defense + Player.RightHandItem.Defense;
+      Player.CurrentHP -= StatFunction.CalculateDamage(CurrentMonster.GetPrimaryStat(), CurrentMonster.Wit, PlayerDefense, false);
       EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, Player.CurrentHP, Player.CurrentMP);
 
       EnemyAttackAnimation.Visible = true;
@@ -134,10 +139,9 @@ public partial class FightMode : GameMode
     if (Input.IsActionJustPressed(InputAction.LeftHand))
     {
       // use left hand item
-      if (StatFunction.CalculateHit(AttackFit + Player.LeftHandItem.Fit, CurrentMonster.Fit))
+      if (StatFunction.CalculateHit(AttackFit - Player.LeftHandItem.Weight, CurrentMonster.Fit))
       {
-        AttackWit += Player.LeftHandItem.Wit;
-        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(true), AttackWit, CurrentMonster.Grit);
+        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(true) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit);
 
         AttackAnimation.Visible = true;
         EnemySprite.Visible = false;
@@ -152,10 +156,9 @@ public partial class FightMode : GameMode
     if (Input.IsActionJustPressed(InputAction.RightHand))
     {
       // use left hand item
-      if (StatFunction.CalculateHit(AttackFit + Player.RightHandItem.Fit, CurrentMonster.Fit))
+      if (StatFunction.CalculateHit(AttackFit - Player.RightHandItem.Weight, CurrentMonster.Fit))
       {
-        AttackWit += Player.RightHandItem.Wit;
-        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(false), AttackWit, CurrentMonster.Grit);
+        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(false) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit);
 
         AttackAnimation.Visible = true;
         EnemySprite.Visible = false;
@@ -187,8 +190,8 @@ public partial class FightMode : GameMode
     CurrentMonster = CurrentMonsterTable.GetMonster();
     MonsterCurrentHP = CurrentMonster.HP;
     Direction.Text = "!";
-    PlayerDelay = 0;
-    MonsterDelay = 0;
+    PlayerDelay = GD.RandRange(0, 9);
+    MonsterDelay = GD.RandRange(0, 9);
     DefendModifier = 0;
     Visible = true;
 

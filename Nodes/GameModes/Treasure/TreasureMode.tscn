@@ -34,20 +34,20 @@ position = Vector2(8, 8)
 texture = ExtResource("2_d1q5i")
 centered = false
 
-[node name="InspectLayer" type="Node2D" parent="." node_paths=PackedStringArray("FitLabel", "WitLabel", "GritLabel")]
+[node name="InspectLayer" type="Node2D" parent="." node_paths=PackedStringArray("AttackLabel", "DefenseLabel", "WeightLabel")]
 visible = false
 z_index = 2
 script = ExtResource("3_614wd")
-FitLabel = NodePath("Fit")
-WitLabel = NodePath("Wit")
-GritLabel = NodePath("Grit")
+AttackLabel = NodePath("Attack")
+DefenseLabel = NodePath("Defense")
+WeightLabel = NodePath("Weight")
 
 [node name="ColorRect" type="ColorRect" parent="InspectLayer"]
 offset_right = 24.0
 offset_bottom = 24.0
 color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 
-[node name="Fit" type="RichTextLabel" parent="InspectLayer"]
+[node name="Attack" type="RichTextLabel" parent="InspectLayer"]
 z_index = 3
 use_parent_material = true
 offset_right = 24.0
@@ -58,7 +58,7 @@ text = "[color=77c777]F 2[/color]"
 scroll_active = false
 metadata/_edit_use_anchors_ = true
 
-[node name="Wit" type="RichTextLabel" parent="InspectLayer"]
+[node name="Defense" type="RichTextLabel" parent="InspectLayer"]
 z_index = 3
 use_parent_material = true
 offset_top = 8.0
@@ -70,7 +70,7 @@ text = "[color=758bc7]W-1[/color]"
 scroll_active = false
 metadata/_edit_use_anchors_ = true
 
-[node name="Grit" type="RichTextLabel" parent="InspectLayer"]
+[node name="Weight" type="RichTextLabel" parent="InspectLayer"]
 z_index = 3
 use_parent_material = true
 offset_top = 16.0

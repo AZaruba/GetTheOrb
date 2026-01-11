@@ -18,6 +18,7 @@ public partial class CharacterClass : Resource
   [Export] public int[] WitOnLevel;
   [Export] public int[] FitOnLevel;
   [Export] public int[] GritOnLevel;
+  [Export] public int[] HPOnLevel;
 
   public int Wit;
   public int Fit;

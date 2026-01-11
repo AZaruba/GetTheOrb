@@ -4,7 +4,7 @@ using System;
 public partial class Item : Resource
 {
   [Export] public CompressedTexture2D Sprite;
-  [Export] public int Wit;
-  [Export] public int Fit;
-  [Export] public int Grit;
+  [Export] public int Attack;
+  [Export] public int Defense;
+  [Export] public int Weight;
 }
