@@ -14,6 +14,7 @@ public partial class TitleMode : GameMode
     }
     if (Input.IsActionJustPressed(InputAction.Advance))
     {
+      SfxPlayer.Instance.PlayConfirmAudio();
       EventBus.Instance.EmitSignal(EventBus.SignalName.OnAdvanceFromTitle);
     }
   }
@@ -25,6 +26,7 @@ public partial class TitleMode : GameMode
       timer.Stop();
       return;
     }
+    SfxPlayer.Instance.PlayHitSFX(AttackType.BLUNT);
     Labels[CurrentLabel].Visible = true;
     CurrentLabel++;
   }

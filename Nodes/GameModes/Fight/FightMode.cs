@@ -4,6 +4,7 @@ public partial class FightMode : GameMode
 {
   private enum PHASE
   {
+    WAITING_FOR_LOCK,
     PLAYER_TURN,
     MONSTER_TURN,
     DELAYING,
@@ -35,14 +36,20 @@ public partial class FightMode : GameMode
   public override void _Ready()
   {
     EventBus.Instance.OnMonsterEncountered += OnMonsterEncountered;
+    SfxPlayer.Instance.Finished += ReleaseAudioLock;
     CurrentMonsterTable = ResourceLoader.Load<MonsterTable>("res://Assets/Data/Monsters/FloorOneMonsterTable.tres");
   }
   public override void _ExitTree()
   {
     EventBus.Instance.OnMonsterEncountered -= OnMonsterEncountered;
+    SfxPlayer.Instance.Finished -= ReleaseAudioLock;
   }
   public override void ProcessGameMode(double delta)
   {
+    if (CurrentPhase == PHASE.WAITING_FOR_LOCK)
+    {
+      return;
+    }
     if (Player.CurrentHP <= 0)
     {
       EventBus.Instance.EmitSignal(EventBus.SignalName.OnGameOver);
@@ -122,12 +129,14 @@ public partial class FightMode : GameMode
 
       EnemyAttackAnimation.Visible = true;
       AnimPlayer.Play("AttackAnims/Enemy");
+        SfxPlayer.Instance.PlayHitSFX(AttackType.ENEMY);
       CurrentPhase = PHASE.ANIMATING;
     }
     else
     {
       EnemyAttackAnimation.Visible = true;
       AnimPlayer.Play("AttackAnims/EnemyMiss");
+        SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
       CurrentPhase = PHASE.ANIMATING;
     }
   }
@@ -146,6 +155,7 @@ public partial class FightMode : GameMode
         AttackAnimation.Visible = true;
         EnemySprite.Visible = false;
         AnimPlayer.Play(Anim.AttackStrings[Player.LeftHandItem.Type]);
+        SfxPlayer.Instance.PlayHitSFX(Player.LeftHandItem.Type);
         CurrentPhase = PHASE.ANIMATING;
       }
       else
@@ -153,6 +163,7 @@ public partial class FightMode : GameMode
         AttackAnimation.Visible = true;
         EnemySprite.Visible = false;
         AnimPlayer.Play("AttackAnims/Miss");
+        SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
         CurrentPhase = PHASE.ANIMATING;
       }
     }
@@ -166,6 +177,7 @@ public partial class FightMode : GameMode
         AttackAnimation.Visible = true;
         EnemySprite.Visible = false;
         AnimPlayer.Play(Anim.AttackStrings[Player.RightHandItem.Type]);
+        SfxPlayer.Instance.PlayHitSFX(Player.RightHandItem.Type);
         CurrentPhase = PHASE.ANIMATING;
       }
       else
@@ -173,6 +185,7 @@ public partial class FightMode : GameMode
         AttackAnimation.Visible = true;
         EnemySprite.Visible = false;
         AnimPlayer.Play("AttackAnims/Miss");
+        SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
         CurrentPhase = PHASE.ANIMATING;
       }
     }
@@ -190,9 +203,13 @@ public partial class FightMode : GameMode
     }
   }
 
+  private void ReleaseAudioLock()
+  {
+    CurrentPhase = PHASE.DELAYING;
+  }
+
   private void OnMonsterEncountered()
   {
-    // TODO how to actually handle monster weights
     CurrentMonster = CurrentMonsterTable.GetMonster();
     MonsterCurrentHP = CurrentMonster.HP;
     Direction.Text = "!";
@@ -203,6 +220,6 @@ public partial class FightMode : GameMode
 
     EnemySprite.Texture = CurrentMonster.Sprite;
     EnemySprite.Visible = true;
-    CurrentPhase = PHASE.DELAYING;
+    CurrentPhase = PHASE.WAITING_FOR_LOCK;
   }
 }

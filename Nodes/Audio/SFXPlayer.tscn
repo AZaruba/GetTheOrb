@@ -1,0 +1,26 @@
+[gd_scene load_steps=11 format=3 uid="uid://8eg5xghioldq"]
+
+[ext_resource type="Script" uid="uid://du2s6ir2micn7" path="res://Nodes/Audio/SfxPlayer.cs" id="1_yepb0"]
+[ext_resource type="AudioStream" uid="uid://csyavi8qtg6sk" path="res://Assets/Audio/SFX/Attacks/BluntHit.wav" id="2_rlvf2"]
+[ext_resource type="AudioStream" uid="uid://b5umv513kuilw" path="res://Assets/Audio/SFX/Attacks/SlashHit.wav" id="3_l08yc"]
+[ext_resource type="AudioStream" uid="uid://qnwy4kcr2qq1" path="res://Assets/Audio/SFX/Attacks/PierceHit.wav" id="4_2gkui"]
+[ext_resource type="AudioStream" uid="uid://bq20vooqailyq" path="res://Assets/Audio/SFX/Attacks/Miss.wav" id="5_138ht"]
+[ext_resource type="AudioStream" uid="uid://cc3s82u2gm7qy" path="res://Assets/Audio/SFX/Tiles/LadderTile.wav" id="6_gscs4"]
+[ext_resource type="AudioStream" uid="uid://bxhf1roasf80e" path="res://Assets/Audio/SFX/Tiles/Encounter.wav" id="7_lccyo"]
+[ext_resource type="AudioStream" uid="uid://8krfqf87gytn" path="res://Assets/Audio/SFX/Tiles/HealingTile.wav" id="7_rlvf2"]
+[ext_resource type="AudioStream" uid="uid://d0vsg5i3qsr4q" path="res://Assets/Audio/SFX/Wandering/Move.wav" id="9_l08yc"]
+[ext_resource type="AudioStream" uid="uid://6m3t3v12gqsk" path="res://Assets/Audio/SFX/Confirm.wav" id="10_2gkui"]
+
+[node name="SfxPlayer" type="AudioStreamPlayer"]
+volume_db = -3.029
+bus = &"SFX"
+script = ExtResource("1_yepb0")
+BluntHitSFX = ExtResource("2_rlvf2")
+SlashHitSFX = ExtResource("3_l08yc")
+PierceHitSFX = ExtResource("4_2gkui")
+MissSFX = ExtResource("5_138ht")
+LadderSFX = ExtResource("6_gscs4")
+HealingSFX = ExtResource("7_rlvf2")
+EncounterSFX = ExtResource("7_lccyo")
+MoveSFX = ExtResource("9_l08yc")
+ConfirmSFX = ExtResource("10_2gkui")

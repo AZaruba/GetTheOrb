@@ -33,6 +33,7 @@ public partial class CharacterSelectMode : GameMode
     }
     if (Input.IsActionJustPressed(InputAction.Advance))
     {
+      SfxPlayer.Instance.PlayConfirmAudio();
       EventBus.Instance.EmitSignal(EventBus.SignalName.OnSelectCharacter, Characters[CurrentCharacter]);
       EventBus.Instance.EmitSignal(EventBus.SignalName.OnLevelUp, 0, Characters[CurrentCharacter].Fit,Characters[CurrentCharacter].Wit,Characters[CurrentCharacter].Grit);
     }

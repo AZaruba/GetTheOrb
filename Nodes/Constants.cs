@@ -39,7 +39,8 @@ public static class Direction
     BLUNT,
     MAGIC,
     MISS,
-    ENEMY
+    ENEMY,
+    NONE,
   }
 
 public static class Anim
@@ -50,6 +51,7 @@ public static class Anim
     { AttackType.BLUNT, "AttackAnims/Blunt"},
     { AttackType.PIERCE, "AttackAnims/Pierce"},
     { AttackType.MISS, "AttackAnims/Miss"},
-    { AttackType.ENEMY, "AttackAnims/Enemy"}
+    { AttackType.ENEMY, "AttackAnims/Enemy"},
+    { AttackType.NONE, "AttackAnims/Blunt"}
   };
 }

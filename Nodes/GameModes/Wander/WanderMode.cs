@@ -81,7 +81,6 @@ public partial class WanderMode : GameMode
     }
     else
     {
-    
       OnMove(PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
     }
   }
@@ -227,6 +226,10 @@ public partial class WanderMode : GameMode
     {
       PlayerSteps = 0;
       EventBus.Instance.EmitSignal(EventBus.SignalName.OnMonsterEncountered);
+    }
+    else
+    {
+      SfxPlayer.Instance.PlayMoveAudio();
     }
   }
 }

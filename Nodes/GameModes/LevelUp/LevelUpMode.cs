@@ -28,6 +28,7 @@ public partial class LevelUpMode : GameMode
       timer.Stop();
       return;
     }
+    SfxPlayer.Instance.PlayHitSFX(AttackType.BLUNT);
     Labels[CurrentLabel].Visible = true;
     CurrentLabel++;
   }
