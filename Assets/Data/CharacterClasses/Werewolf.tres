@@ -1,5 +1,6 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://b2qryu8l2ur3p"]
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://b2qryu8l2ur3p"]
 
+[ext_resource type="Resource" uid="uid://x7ocqsjrj71g" path="res://Assets/Data/Magic/WerewolfSpell.tres" id="1_4rfp2"]
 [ext_resource type="Texture2D" uid="uid://dw5yyauuhc5yc" path="res://Assets/Art/Characters/wlf.png" id="1_pdppf"]
 [ext_resource type="Script" uid="uid://cfbua2rjb4540" path="res://Assets/Data/CharacterClasses/CharacterClass.cs" id="2_4rfp2"]
 
@@ -7,6 +8,7 @@
 script = ExtResource("2_4rfp2")
 Sprite = ExtResource("1_pdppf")
 Name = "WLF"
+Spell = ExtResource("1_4rfp2")
 BaseWit = 1
 BaseFit = 2
 BaseGrit = 3

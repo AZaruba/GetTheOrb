@@ -10,4 +10,5 @@ public partial class Item : Resource
   [Export] public int Defense;
   [Export] public int Weight;
   [Export] public AttackType Type;
+  [Export] public ItemID ID;
 }

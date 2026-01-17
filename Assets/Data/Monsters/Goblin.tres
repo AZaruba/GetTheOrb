@@ -14,3 +14,4 @@ HP = 7
 EXP = 4
 PrimaryStat = 1
 Treasures = ExtResource("2_q2cm1")
+WeakTo = 2

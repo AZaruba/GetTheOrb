@@ -13,3 +13,4 @@ Grit = 1
 HP = 5
 EXP = 2
 Treasures = ExtResource("2_26ysf")
+WeakTo = 3

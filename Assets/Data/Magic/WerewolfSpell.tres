@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://x7ocqsjrj71g"]
+
+[ext_resource type="Script" uid="uid://btfs6xpby1qry" path="res://Assets/Data/Magic/WerewolfSpell.cs" id="1_86u8a"]
+
+[resource]
+script = ExtResource("1_86u8a")

@@ -43,6 +43,20 @@ public static class Direction
     NONE,
   }
 
+  public enum ItemID
+{
+  ERR_ITM,
+  STICK,
+  SWORD,
+  LANCE,
+  AXE,
+  ORB,
+  BOOTS,
+  SHIELD,
+  STAFF,
+  NULL
+}
+
 public static class Anim
 {
   public static readonly Dictionary<AttackType, string> AttackStrings = new()

@@ -13,6 +13,9 @@ public partial class Monster : Resource
   [Export] public CharacterClass.Stat PrimaryStat;
   [Export] public TreasureTable Treasures;
 
+  [Export] public AttackType ResistantTo = AttackType.NONE;
+  [Export] public AttackType WeakTo = AttackType.NONE;
+
   public int GetPrimaryStat()
   {
     if (PrimaryStat == CharacterClass.Stat.WIT)

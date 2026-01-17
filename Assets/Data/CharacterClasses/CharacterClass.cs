@@ -12,6 +12,7 @@ public partial class CharacterClass : Resource
   [Export] public CompressedTexture2D Sprite;
   [Export] public string Name;
   [Export] public Stat PrimaryStat;
+  [Export] public MagicSpell Spell;
   [Export] public int BaseWit;
   [Export] public int BaseFit;
   [Export] public int BaseGrit;

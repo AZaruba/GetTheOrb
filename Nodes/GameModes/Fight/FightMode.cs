@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class FightMode : GameMode
@@ -30,19 +31,19 @@ public partial class FightMode : GameMode
   private int DefendModifier;
   private PHASE CurrentPhase;
 
+  private bool RepeatAnimation = false;
+
   private int DelayCap = 10;
 
   MonsterTable CurrentMonsterTable; // TODO tie tables to floors
   public override void _Ready()
   {
     EventBus.Instance.OnMonsterEncountered += OnMonsterEncountered;
-    SfxPlayer.Instance.Finished += ReleaseAudioLock;
     CurrentMonsterTable = ResourceLoader.Load<MonsterTable>("res://Assets/Data/Monsters/FloorOneMonsterTable.tres");
   }
   public override void _ExitTree()
   {
     EventBus.Instance.OnMonsterEncountered -= OnMonsterEncountered;
-    SfxPlayer.Instance.Finished -= ReleaseAudioLock;
   }
   public override void ProcessGameMode(double delta)
   {
@@ -91,11 +92,13 @@ public partial class FightMode : GameMode
         PlayerDelay %= DelayCap;
         CurrentPhase = PHASE.PLAYER_TURN;
         DefendModifier = 0;
+        return;
       }
-      else if (MonsterDelay > 10)
+      else if (MonsterDelay > DelayCap)
       {
         MonsterDelay %= DelayCap;
         CurrentPhase = PHASE.MONSTER_TURN;
+        return;
       }
       else
       {
@@ -109,10 +112,19 @@ public partial class FightMode : GameMode
   {
     if (!AnimPlayer.IsPlaying())
     {
-      EnemySprite.Visible = true;
-      EnemyAttackAnimation.Visible = false;
-      AttackAnimation.Visible = false;
-      CurrentPhase = PHASE.DELAYING;
+      if (RepeatAnimation)
+      {
+        SfxPlayer.Instance.PlayHitSFX(Player.LeftHandItem.Type);
+        RepeatAnimation = false;
+        AnimPlayer.Play();
+      }
+      else
+      {
+        EnemySprite.Visible = true;
+        EnemyAttackAnimation.Visible = false;
+        AttackAnimation.Visible = false;
+        CurrentPhase = PHASE.DELAYING;
+      }
     }
   }
 
@@ -124,7 +136,7 @@ public partial class FightMode : GameMode
     if (StatFunction.CalculateHit(CurrentMonster.Fit, PlayerDodge))
     {
       int PlayerDefense = Player.Job.Grit + Player.LeftHandItem.Defense + Player.RightHandItem.Defense;
-      Player.CurrentHP -= StatFunction.CalculateDamage(CurrentMonster.GetPrimaryStat(), CurrentMonster.Wit, PlayerDefense, AttackType.ENEMY, false);
+      Player.CurrentHP -= StatFunction.CalculateDamage(CurrentMonster.GetPrimaryStat(), CurrentMonster.Wit, PlayerDefense, AttackType.ENEMY, AttackType.NONE, AttackType.NONE, false);
       EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, Player.CurrentHP, Player.CurrentMP);
 
       EnemyAttackAnimation.Visible = true;
@@ -145,48 +157,25 @@ public partial class FightMode : GameMode
   {
     int AttackFit = Player.Job.Fit;
     int AttackWit = Player.Job.Wit;
+    bool DualWield = Player.LeftHandItem.ID == Player.RightHandItem.ID;
     if (Input.IsActionJustPressed(InputAction.LeftHand))
     {
-      // use left hand item
-      if (StatFunction.CalculateHit(AttackFit - Player.LeftHandItem.Weight, CurrentMonster.Fit))
+      LeftHandAttack(AttackFit, AttackWit);
+      if (DualWield)
       {
-        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(true) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit, Player.LeftHandItem.Type);
-
-        AttackAnimation.Visible = true;
-        EnemySprite.Visible = false;
-        AnimPlayer.Play(Anim.AttackStrings[Player.LeftHandItem.Type]);
-        SfxPlayer.Instance.PlayHitSFX(Player.LeftHandItem.Type);
-        CurrentPhase = PHASE.ANIMATING;
-      }
-      else
-      {
-        AttackAnimation.Visible = true;
-        EnemySprite.Visible = false;
-        AnimPlayer.Play("AttackAnims/Miss");
-        SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
-        CurrentPhase = PHASE.ANIMATING;
+        GD.Print("Dual wielding");
+        RightHandAttack(AttackFit, AttackWit);
+        RepeatAnimation = true;
       }
     }
     if (Input.IsActionJustPressed(InputAction.RightHand))
     {
-      // use left hand item
-      if (StatFunction.CalculateHit(AttackFit - Player.RightHandItem.Weight, CurrentMonster.Fit))
+      RightHandAttack(AttackFit, AttackWit);
+      if (DualWield)
       {
-        MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(false) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit, Player.RightHandItem.Type);
-
-        AttackAnimation.Visible = true;
-        EnemySprite.Visible = false;
-        AnimPlayer.Play(Anim.AttackStrings[Player.RightHandItem.Type]);
-        SfxPlayer.Instance.PlayHitSFX(Player.RightHandItem.Type);
-        CurrentPhase = PHASE.ANIMATING;
-      }
-      else
-      {
-        AttackAnimation.Visible = true;
-        EnemySprite.Visible = false;
-        AnimPlayer.Play("AttackAnims/Miss");
-        SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
-        CurrentPhase = PHASE.ANIMATING;
+        GD.Print("Dual wielding");
+        LeftHandAttack(AttackFit, AttackWit);
+        RepeatAnimation = true;
       }
     }
     if (Input.IsActionJustPressed(InputAction.Defend))
@@ -199,17 +188,67 @@ public partial class FightMode : GameMode
     {
       // Use Class ability
       Player.CurrentMP--;
+      Player.Job.Spell.Cast(ref Player, ref MonsterCurrentHP, ref MonsterDelay);
+
       EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, Player.CurrentHP, Player.CurrentMP);
+    }
+  }
+
+  private void RightHandAttack(int AttackFit, int AttackWit)
+  {
+    // use right hand item
+    if (StatFunction.CalculateHit(AttackFit - Player.RightHandItem.Weight, CurrentMonster.Fit))
+    {
+      MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(false) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit, Player.RightHandItem.Type, CurrentMonster.WeakTo, CurrentMonster.ResistantTo);
+
+      AttackAnimation.Visible = true;
+      EnemySprite.Visible = false;
+      AnimPlayer.Play(Anim.AttackStrings[Player.RightHandItem.Type]);
+      SfxPlayer.Instance.PlayHitSFX(Player.RightHandItem.Type);
+      CurrentPhase = PHASE.ANIMATING;
+    }
+    else
+    {
+      AttackAnimation.Visible = true;
+      EnemySprite.Visible = false;
+      AnimPlayer.Play("AttackAnims/Miss");
+      SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
+      CurrentPhase = PHASE.ANIMATING;
+    }
+  }
+
+  private void LeftHandAttack(int AttackFit, int AttackWit)
+  {
+    // use left hand item
+    if (StatFunction.CalculateHit(AttackFit - Player.LeftHandItem.Weight, CurrentMonster.Fit))
+    {
+      MonsterCurrentHP -= StatFunction.CalculateDamage(Player.GetPrimaryStat(true) + Player.LeftHandItem.Attack, AttackWit, CurrentMonster.Grit, Player.LeftHandItem.Type, CurrentMonster.WeakTo, CurrentMonster.ResistantTo);
+
+      AttackAnimation.Visible = true;
+      EnemySprite.Visible = false;
+      AnimPlayer.Play(Anim.AttackStrings[Player.LeftHandItem.Type]);
+      SfxPlayer.Instance.PlayHitSFX(Player.LeftHandItem.Type);
+      CurrentPhase = PHASE.ANIMATING;
+    }
+    else
+    {
+      AttackAnimation.Visible = true;
+      EnemySprite.Visible = false;
+      AnimPlayer.Play("AttackAnims/Miss");
+      SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
+      CurrentPhase = PHASE.ANIMATING;
     }
   }
 
   private void ReleaseAudioLock()
   {
     CurrentPhase = PHASE.DELAYING;
+    SfxPlayer.Instance.Finished -= ReleaseAudioLock;
   }
 
   private void OnMonsterEncountered()
   {
+    SfxPlayer.Instance.Finished += ReleaseAudioLock;
     CurrentMonster = CurrentMonsterTable.GetMonster();
     MonsterCurrentHP = CurrentMonster.HP;
     Direction.Text = "!";
@@ -217,6 +256,7 @@ public partial class FightMode : GameMode
     MonsterDelay = GD.RandRange(0, 9);
     DefendModifier = 0;
     Visible = true;
+    RepeatAnimation = false;
 
     EnemySprite.Texture = CurrentMonster.Sprite;
     EnemySprite.Visible = true;

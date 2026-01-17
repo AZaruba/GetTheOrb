@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cowdcqcmju4an"]
+
+[ext_resource type="Script" uid="uid://cjjcvnhlcn3c" path="res://Assets/Data/Magic/SkeletonSpell.cs" id="1_ol8vu"]
+
+[resource]
+script = ExtResource("1_ol8vu")

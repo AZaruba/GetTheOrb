@@ -12,17 +12,18 @@ public static class StatFunction
     return AttackRoll < (float)AttackFit / (DefendFit + AttackFit);
   }
 
-  public static int CalculateDamage(int AttackPower, int AttackWit, int DefendGrit, AttackType type, bool Player = true)
+  public static int CalculateDamage(int AttackPower, int AttackWit, int DefendGrit, AttackType type, AttackType defendWeak = AttackType.NONE, AttackType defendResist = AttackType.NONE , bool Player = true)
   {
     int AttackRoll = GD.RandRange(0,AttackPower+1);
     int damage = Mathf.FloorToInt((float)AttackRoll / ((DefendGrit + 9) / 9));
     if (!Player)
     {
-    GD.Print($"Rolled {AttackRoll} but hit for {damage}");
+      GD.Print($"Rolled {AttackRoll} but hit for {damage}");
     }
     float CritRoll = GD.Randf();
-    if (CritRoll < AttackWit/Mathf.Max(9.0f, AttackWit+1) * 0.3f)
+    if (CritRoll < AttackWit/(AttackWit*2+3))
     {
+      GD.Print("Crit!");
       if (Player)
       {
         damage *= 2;
@@ -31,6 +32,15 @@ public static class StatFunction
       {
         damage++;
       }
+    }
+
+    if (type == defendResist)
+    {
+      damage = Mathf.FloorToInt((float)damage/2);
+    }
+    else if (type == defendWeak)
+    {
+      damage *= 2;
     }
 
     if (Player && damage == 0)

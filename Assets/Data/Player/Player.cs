@@ -77,7 +77,7 @@ public partial class Player : Node2D
 
   public void OnHealingTileEncounter()
   {
-    CurrentHP = Job.HPOnLevel[Level];
+    CurrentHP = Math.Max(CurrentHP, Job.HPOnLevel[Level]);
     CurrentMP = Job.Wit;
     EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, CurrentHP, CurrentMP);
   }
@@ -88,7 +88,6 @@ public partial class Player : Node2D
     if (EXP >= LevelCurve[Level] && Level < MaxLevel)
     {
       Level++;
-      GD.Print(Job.GritOnLevel[Level]);
       Job.Fit = Job.FitOnLevel[Level];
       Job.Wit = Job.WitOnLevel[Level];
       Job.Grit = Job.GritOnLevel[Level];

@@ -8,3 +8,4 @@ script = ExtResource("2_v8mmn")
 Sprite = ExtResource("1_t6gnw")
 Attack = 1
 Type = 1
+ID = 2

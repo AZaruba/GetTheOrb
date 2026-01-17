@@ -1,0 +1,6 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://c7mu2olsv0nsa"]
+
+[ext_resource type="Script" uid="uid://b8847vpcamiij" path="res://Assets/Data/Magic/VampireSpell.cs" id="1_jkkaw"]
+
+[resource]
+script = ExtResource("1_jkkaw")

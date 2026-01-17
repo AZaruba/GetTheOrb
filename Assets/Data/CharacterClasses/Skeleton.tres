@@ -1,5 +1,6 @@
-[gd_resource type="Resource" load_steps=3 format=3 uid="uid://n7242f1q2ccl"]
+[gd_resource type="Resource" load_steps=4 format=3 uid="uid://n7242f1q2ccl"]
 
+[ext_resource type="Resource" uid="uid://cowdcqcmju4an" path="res://Assets/Data/Magic/SkeletonSpell.tres" id="1_76tid"]
 [ext_resource type="Texture2D" uid="uid://dv24a2d85plyq" path="res://Assets/Art/Characters/skl.png" id="1_gc508"]
 [ext_resource type="Script" uid="uid://cfbua2rjb4540" path="res://Assets/Data/CharacterClasses/CharacterClass.cs" id="1_mne13"]
 
@@ -8,6 +9,7 @@ script = ExtResource("1_mne13")
 Sprite = ExtResource("1_gc508")
 Name = "SKL"
 PrimaryStat = 1
+Spell = ExtResource("1_76tid")
 BaseWit = 1
 BaseFit = 3
 BaseGrit = 2
