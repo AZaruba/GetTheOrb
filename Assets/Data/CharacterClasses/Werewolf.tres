@@ -8,6 +8,7 @@
 script = ExtResource("2_4rfp2")
 Sprite = ExtResource("1_pdppf")
 Name = "WLF"
+PrimaryStat = 2
 Spell = ExtResource("1_4rfp2")
 BaseWit = 1
 BaseFit = 2
