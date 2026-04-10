@@ -9,6 +9,8 @@ public static class StatFunction
     float AttackRoll = GD.Randf();
 
     AttackFit = Math.Max(AttackFit, 1);
+    GD.Print($"Rolled {AttackRoll} with AF {AttackFit} against {DefendFit}");
+    GD.Print($"Returning {AttackRoll < (float)AttackFit / (DefendFit + AttackFit)}");
     return AttackRoll < (float)AttackFit / (DefendFit + AttackFit);
   }
 
@@ -54,7 +56,6 @@ public static class StatFunction
       damage = Math.Min(Mathf.CeilToInt((float)(WanderMode.FloorIndex+1)/2),damage);
     }
 
-    GD.Print("Hit For " + damage + " Damage");
     return damage;
   }
 }

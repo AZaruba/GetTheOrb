@@ -66,6 +66,7 @@ public static class Anim
     { AttackType.PIERCE, "AttackAnims/Pierce"},
     { AttackType.MISS, "AttackAnims/Miss"},
     { AttackType.ENEMY, "AttackAnims/Enemy"},
-    { AttackType.NONE, "AttackAnims/Blunt"}
+    { AttackType.NONE, "AttackAnims/Blunt"},
+    { AttackType.MAGIC, "AttackAnims/Magic"}
   };
 }

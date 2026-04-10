@@ -1,82 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://dynkmv8wjufmj"]
+[gd_scene format=3 uid="uid://dynkmv8wjufmj"]
 
 [ext_resource type="Script" uid="uid://cwbtwa6amp56n" path="res://Nodes/GameModes/Treasure/TreasureMode.cs" id="1_j6ubd"]
 [ext_resource type="Texture2D" uid="uid://i7f5oe2np7vp" path="res://Assets/Art/UI/TreasureChest.png" id="2_d1q5i"]
-[ext_resource type="Script" uid="uid://die1sd7neda5c" path="res://Nodes/GameModes/Treasure/InspectLayer.cs" id="3_614wd"]
-[ext_resource type="Theme" uid="uid://eaxxee4p30ip" path="res://Assets/Fonts/TextTheme.tres" id="4_jdgoo"]
 
-[node name="TreasureMode" type="Node2D" node_paths=PackedStringArray("TreasureSprite", "ItemSprite", "InspectLayer")]
+[node name="TreasureMode" type="Node2D" unique_id=1912899404 node_paths=PackedStringArray("TreasureSprite", "ItemSprite", "InspectLayer")]
 z_index = 5
 texture_filter = 1
 script = ExtResource("1_j6ubd")
 TreasureSprite = NodePath("TreasureSprite")
 ItemSprite = NodePath("ItemSprite")
-InspectLayer = NodePath("InspectLayer")
+InspectLayer = NodePath("")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1331960660]
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 16.0
 offset_bottom = 16.0
 color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 
-[node name="TreasureSprite" type="Sprite2D" parent="."]
+[node name="TreasureSprite" type="Sprite2D" parent="." unique_id=691093399]
 z_index = 1
 texture_filter = 1
 position = Vector2(8, 8)
 texture = ExtResource("2_d1q5i")
 centered = false
 
-[node name="ItemSprite" type="Sprite2D" parent="."]
+[node name="ItemSprite" type="Sprite2D" parent="." unique_id=2108802254]
 visible = false
 texture_filter = 1
 position = Vector2(8, 8)
 texture = ExtResource("2_d1q5i")
 centered = false
-
-[node name="InspectLayer" type="Node2D" parent="." node_paths=PackedStringArray("AttackLabel", "DefenseLabel", "WeightLabel")]
-visible = false
-z_index = 2
-script = ExtResource("3_614wd")
-AttackLabel = NodePath("Attack")
-DefenseLabel = NodePath("Defense")
-WeightLabel = NodePath("Weight")
-
-[node name="ColorRect" type="ColorRect" parent="InspectLayer"]
-offset_right = 24.0
-offset_bottom = 24.0
-color = Color(0.101960786, 0.101960786, 0.101960786, 1)
-
-[node name="Attack" type="RichTextLabel" parent="InspectLayer"]
-z_index = 3
-use_parent_material = true
-offset_right = 24.0
-offset_bottom = 8.0
-theme = ExtResource("4_jdgoo")
-bbcode_enabled = true
-text = "[color=77c777]F 2[/color]"
-scroll_active = false
-metadata/_edit_use_anchors_ = true
-
-[node name="Defense" type="RichTextLabel" parent="InspectLayer"]
-z_index = 3
-use_parent_material = true
-offset_top = 8.0
-offset_right = 24.0
-offset_bottom = 16.0
-theme = ExtResource("4_jdgoo")
-bbcode_enabled = true
-text = "[color=758bc7]W-1[/color]"
-scroll_active = false
-metadata/_edit_use_anchors_ = true
-
-[node name="Weight" type="RichTextLabel" parent="InspectLayer"]
-z_index = 3
-use_parent_material = true
-offset_top = 16.0
-offset_right = 24.0
-offset_bottom = 24.0
-theme = ExtResource("4_jdgoo")
-bbcode_enabled = true
-text = "[color=c77575]G 1[/color]"
-metadata/_edit_use_anchors_ = true

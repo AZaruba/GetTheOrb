@@ -12,7 +12,9 @@ public partial class WanderMode : GameMode
   [Export] public RichTextLabel MPDisplay;
   [Export] Node2D StatDisplay;
   [Export] DungeonOverlay LocationDisplay;
+  [Export] InspectLayer InspectLayer;
   [Export] Dungeon DungeonDisplay;
+  [Export] Player PlayerRef;
 
   private int PlayerPositionX;
   private int PlayerPositionY;
@@ -86,15 +88,25 @@ public partial class WanderMode : GameMode
   }
   public override void ProcessGameMode(double delta)
   {
-    if (!LocationDisplay.Visible && Input.IsActionJustPressed(InputAction.Stats))
+    if (!LocationDisplay.Visible &&  !InspectLayer.Visible && Input.IsActionJustPressed(InputAction.Stats))
     {
       StatDisplay.Visible = !StatDisplay.Visible;
     }
-    if (!StatDisplay.Visible && Input.IsActionJustPressed(InputAction.Location))
+    if (!StatDisplay.Visible && !InspectLayer.Visible && Input.IsActionJustPressed(InputAction.Location))
     {
       LocationDisplay.Visible = !LocationDisplay.Visible;
     }
-    if (StatDisplay.Visible || LocationDisplay.Visible)
+    if (!LocationDisplay.Visible &&  !StatDisplay.Visible && Input.IsActionJustPressed(InputAction.LeftHand))
+    {
+      InspectLayer.Populate(PlayerRef.LeftHandItem.Attack, PlayerRef.LeftHandItem.Defense, PlayerRef.LeftHandItem.Weight);
+      InspectLayer.Visible = !InspectLayer.Visible;
+    }
+    if (!LocationDisplay.Visible &&  !StatDisplay.Visible && Input.IsActionJustPressed(InputAction.RightHand))
+    {
+      InspectLayer.Populate(PlayerRef.RightHandItem.Attack, PlayerRef.RightHandItem.Defense, PlayerRef.RightHandItem.Weight);
+      InspectLayer.Visible = !InspectLayer.Visible;
+    }
+    if (StatDisplay.Visible || LocationDisplay.Visible || InspectLayer.Visible)
     {
       return;
     }

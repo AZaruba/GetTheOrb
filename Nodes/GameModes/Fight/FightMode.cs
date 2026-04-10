@@ -32,6 +32,8 @@ public partial class FightMode : GameMode
   private PHASE CurrentPhase;
 
   private bool RepeatAnimation = false;
+  private bool AttackOneHit = false;
+  private bool AttackTwoHit = false;
 
   private int DelayCap = 10;
 
@@ -114,9 +116,15 @@ public partial class FightMode : GameMode
     {
       if (RepeatAnimation)
       {
-        SfxPlayer.Instance.PlayHitSFX(Player.LeftHandItem.Type);
+        /* 
+        a little hacky, but this will only occur if the same weapon
+        is used in both hands, so whether it's a left or right attack
+        that started the round, the same calculation will be used regardless
+        */
         RepeatAnimation = false;
-        AnimPlayer.Play();
+        int AttackFit = Player.Job.Fit;
+        int AttackWit = Player.Job.Wit;
+        AttackTwoHit = RightHandAttack(AttackFit, AttackWit);
       }
       else
       {
@@ -141,14 +149,14 @@ public partial class FightMode : GameMode
 
       EnemyAttackAnimation.Visible = true;
       AnimPlayer.Play("AttackAnims/Enemy");
-        SfxPlayer.Instance.PlayHitSFX(AttackType.ENEMY);
+      SfxPlayer.Instance.PlayHitSFX(AttackType.ENEMY);
       CurrentPhase = PHASE.ANIMATING;
     }
     else
     {
       EnemyAttackAnimation.Visible = true;
       AnimPlayer.Play("AttackAnims/EnemyMiss");
-        SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
+      SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
       CurrentPhase = PHASE.ANIMATING;
     }
   }
@@ -160,21 +168,21 @@ public partial class FightMode : GameMode
     bool DualWield = Player.LeftHandItem.ID == Player.RightHandItem.ID;
     if (Input.IsActionJustPressed(InputAction.LeftHand))
     {
-      LeftHandAttack(AttackFit, AttackWit);
+      AttackOneHit = LeftHandAttack(AttackFit, AttackWit);
       if (DualWield)
       {
         GD.Print("Dual wielding");
-        RightHandAttack(AttackFit, AttackWit);
+        AttackTwoHit = RightHandAttack(AttackFit, AttackWit);
         RepeatAnimation = true;
       }
     }
     if (Input.IsActionJustPressed(InputAction.RightHand))
     {
-      RightHandAttack(AttackFit, AttackWit);
+      AttackOneHit = RightHandAttack(AttackFit, AttackWit);
       if (DualWield)
       {
         GD.Print("Dual wielding");
-        LeftHandAttack(AttackFit, AttackWit);
+        AttackTwoHit = LeftHandAttack(AttackFit, AttackWit);
         RepeatAnimation = true;
       }
     }
@@ -189,12 +197,18 @@ public partial class FightMode : GameMode
       // Use Class ability
       Player.CurrentMP--;
       Player.Job.Spell.Cast(ref Player, ref MonsterCurrentHP, ref MonsterDelay);
+      AttackAnimation.Visible = true;
+      EnemySprite.Visible = false;
+      AnimPlayer.Play(Anim.AttackStrings[AttackType.MAGIC]);
+      SfxPlayer.Instance.PlayHealingAudio();
+      CurrentPhase = PHASE.ANIMATING;
 
       EventBus.Emit(EventBus.SignalName.OnUpdateHPMP, Player.CurrentHP, Player.CurrentMP);
     }
   }
 
-  private void RightHandAttack(int AttackFit, int AttackWit)
+  // returns whether attack landed
+  private bool RightHandAttack(int AttackFit, int AttackWit)
   {
     // use right hand item
     if (StatFunction.CalculateHit(AttackFit - Player.RightHandItem.Weight, CurrentMonster.Fit))
@@ -206,6 +220,7 @@ public partial class FightMode : GameMode
       AnimPlayer.Play(Anim.AttackStrings[Player.RightHandItem.Type]);
       SfxPlayer.Instance.PlayHitSFX(Player.RightHandItem.Type);
       CurrentPhase = PHASE.ANIMATING;
+      return true;
     }
     else
     {
@@ -214,10 +229,12 @@ public partial class FightMode : GameMode
       AnimPlayer.Play("AttackAnims/Miss");
       SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
       CurrentPhase = PHASE.ANIMATING;
+      return false;
     }
   }
 
-  private void LeftHandAttack(int AttackFit, int AttackWit)
+  // returns whether attack landed
+  private bool LeftHandAttack(int AttackFit, int AttackWit)
   {
     // use left hand item
     if (StatFunction.CalculateHit(AttackFit - Player.LeftHandItem.Weight, CurrentMonster.Fit))
@@ -229,6 +246,7 @@ public partial class FightMode : GameMode
       AnimPlayer.Play(Anim.AttackStrings[Player.LeftHandItem.Type]);
       SfxPlayer.Instance.PlayHitSFX(Player.LeftHandItem.Type);
       CurrentPhase = PHASE.ANIMATING;
+      return true;
     }
     else
     {
@@ -237,6 +255,7 @@ public partial class FightMode : GameMode
       AnimPlayer.Play("AttackAnims/Miss");
       SfxPlayer.Instance.PlayHitSFX(AttackType.MISS);
       CurrentPhase = PHASE.ANIMATING;
+      return false;
     }
   }
 
