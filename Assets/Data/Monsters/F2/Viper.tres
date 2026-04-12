@@ -1,0 +1,18 @@
+[gd_resource type="Resource" format=3 uid="uid://b5tn0wdbx2hco"]
+
+[ext_resource type="Texture2D" uid="uid://bnawbk5ndaxce" path="res://Assets/Art/Enemies/Viper.png" id="1_62dty"]
+[ext_resource type="Resource" uid="uid://cvr5q15ccjw7n" path="res://Assets/Data/Monsters/F2/FloorTwoTreasureTable.tres" id="2_62dty"]
+[ext_resource type="Script" uid="uid://oivvua1xar1e" path="res://Assets/Data/Monsters/Monster.cs" id="3_8fs5s"]
+
+[resource]
+script = ExtResource("3_8fs5s")
+Sprite = ExtResource("1_62dty")
+Wit = 1
+Fit = 3
+Grit = 2
+HP = 9
+EXP = 6
+PrimaryStat = 1
+Treasures = ExtResource("2_62dty")
+ResistantTo = 2
+WeakTo = 1

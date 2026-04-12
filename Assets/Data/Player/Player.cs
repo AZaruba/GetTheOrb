@@ -109,11 +109,15 @@ public partial class Player : Node2D
     {
       LeftHandItem = item;
       LeftHandSprite.Texture = LeftHandItem.Sprite;
+      LeftHandSprite.Material.Set("shader_parameter/replace_0", LeftHandItem.ItemColor);
+      GD.Print(LeftHandItem.ItemColor);
     }
     if (slot == 2)
     {
       RightHandItem = item;
       RightHandSprite.Texture = RightHandItem.Sprite;
+      RightHandSprite.Material.Set("shader_parameter/replace_0", RightHandItem.ItemColor);
+      GD.Print(RightHandItem.ItemColor);
     }
   }
 

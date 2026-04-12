@@ -10,6 +10,7 @@ public partial class EventBus : Node
   [Signal] public delegate void OnMonsterDefeatedEventHandler(int exp);
   [Signal] public delegate void OnLevelUpEventHandler(int level, int f, int w, int g);
   [Signal] public delegate void OnUpdateHPMPEventHandler(int hp, int mp);
+  [Signal] public delegate void OnFloorChangeEventHandler(int floor);
 
 
   [Signal] public delegate void OnLadderEncounteredEventHandler();

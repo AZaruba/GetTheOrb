@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://jomdvjl2uyj1" path="res://Nodes/GameModes/CharacterSelect/CharacterSelectMode.tscn" id="2_ujyrv"]
 [ext_resource type="Script" uid="uid://bktpn1e2hrjr8" path="res://Nodes/Dungeon.cs" id="4_h886h"]
 [ext_resource type="Script" uid="uid://dei4is4kcdlo0" path="res://Nodes/GameModes/Wander/WanderMode.cs" id="5_4el28"]
+[ext_resource type="Resource" uid="uid://u283v7cqtdpy" path="res://Assets/Data/Monsters/F1/FloorOneMonsterTable.tres" id="5_5agdt"]
 [ext_resource type="Script" uid="uid://cc2j0vnum1241" path="res://Assets/Data/Player/Player.cs" id="6_4el28"]
+[ext_resource type="Resource" uid="uid://c7upno5dn27qd" path="res://Assets/Data/Monsters/F2/FloorTwoMonsterTable.tres" id="6_h648x"]
 [ext_resource type="Material" uid="uid://bcxkd2a05sksu" path="res://Assets/Shader/palette/PaletteSwap.tres" id="8_noh4w"]
 [ext_resource type="PackedScene" uid="uid://bv4s62owhlinn" path="res://Nodes/GameModes/Fight/FightMode.tscn" id="10_tbiig"]
 [ext_resource type="Script" uid="uid://bgocowgx4pyua" path="res://Nodes/StatOverlay.cs" id="11_4el28"]
@@ -31,6 +33,72 @@ shader_parameter/lines_distance = 4.0
 shader_parameter/scan_size = 2.0
 shader_parameter/scanline_alpha = 0.9
 shader_parameter/lines_velocity = 30.0
+
+[sub_resource type="Shader" id="Shader_h648x"]
+code = "// No recolor
+
+shader_type canvas_item;
+
+
+uniform vec4 original_0: source_color;
+uniform vec4 replace_0: source_color;
+
+const float precision = 0.1;
+
+
+vec4 swap_color(vec4 color){
+	vec4 original_colors[1] = vec4[1] (original_0);
+	vec4 replace_colors[1] = vec4[1] (replace_0);
+	for (int i = 0; i < 1; i ++) {
+		if (distance(color, original_colors[i]) <= precision){
+			return replace_colors[i];
+		}
+	}
+	return color;
+}
+
+
+void fragment() {
+	COLOR = swap_color(texture(TEXTURE, UV));
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h648x"]
+shader = SubResource("Shader_h648x")
+shader_parameter/original_0 = Color(1, 1, 1, 1)
+shader_parameter/replace_0 = Color(1, 1, 1, 1)
+
+[sub_resource type="Shader" id="Shader_5agdt"]
+code = "// No recolor
+
+shader_type canvas_item;
+
+
+uniform vec4 original_0: source_color;
+uniform vec4 replace_0: source_color;
+
+const float precision = 0.1;
+
+
+vec4 swap_color(vec4 color){
+	vec4 original_colors[1] = vec4[1] (original_0);
+	vec4 replace_colors[1] = vec4[1] (replace_0);
+	for (int i = 0; i < 1; i ++) {
+		if (distance(color, original_colors[i]) <= precision){
+			return replace_colors[i];
+		}
+	}
+	return color;
+}
+
+
+void fragment() {
+	COLOR = swap_color(texture(TEXTURE, UV));
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bu6g8"]
+shader = SubResource("Shader_5agdt")
+shader_parameter/original_0 = Color(1, 1, 1, 1)
+shader_parameter/replace_0 = Color(1, 1, 1, 1)
 
 [node name="Base" type="Node2D" unique_id=940796590 node_paths=PackedStringArray("StatDisplay", "DungeonDisplay", "DirectionDisplay", "WanderMode", "FightMode", "TitleMode", "CharacterSelectMode", "TreasureMode", "LevelUpMode", "GameOver")]
 texture_filter = 1
@@ -70,6 +138,7 @@ position = Vector2(32, 32)
 EnemySprite = NodePath("EnemySprite")
 Direction = NodePath("../WanderMode/Status/DirVal")
 Player = NodePath("../Player")
+MonsterTables = Array[Resource]([ExtResource("5_5agdt"), ExtResource("6_h648x"), ExtResource("6_h648x"), ExtResource("6_h648x")])
 
 [node name="EnemySprite" type="Sprite2D" parent="FightMode" unique_id=454989917]
 z_index = 1
@@ -129,7 +198,7 @@ script = ExtResource("4_h886h")
 LeftSprite = NodePath("DunLeft")
 CenterSprite = NodePath("DunCenter")
 RightSprite = NodePath("DunRight")
-DungeonColors = PackedColorArray(0.54509807, 0.45882353, 0.78039217, 1, 0.75686276, 0.78039217, 0.45882353, 1, 0.46666667, 0.78039217, 0.7294118, 1)
+DungeonColors = PackedColorArray(0.54509807, 0.45882353, 0.78039217, 1, 0.75686276, 0.78039217, 0.45882353, 1, 0.46666667, 0.78039217, 0.7294118, 1, 0.54509807, 0.78039217, 0.45882353, 1)
 
 [node name="DunRight" type="Sprite2D" parent="WanderMode/Dungeon" unique_id=519725710]
 texture_filter = 1
@@ -176,14 +245,14 @@ centered = false
 
 [node name="LeftHand" type="Sprite2D" parent="WanderMode/CharDisplay" unique_id=1956253683]
 texture_filter = 1
-use_parent_material = true
+material = SubResource("ShaderMaterial_h648x")
 position = Vector2(0, 16)
 centered = false
 flip_h = true
 
 [node name="RightHand" type="Sprite2D" parent="WanderMode/CharDisplay" unique_id=1147257399]
 texture_filter = 1
-use_parent_material = true
+material = SubResource("ShaderMaterial_bu6g8")
 position = Vector2(16, 16)
 centered = false
 
@@ -290,6 +359,7 @@ z_index = 5
 position = Vector2(24, 24)
 
 [node name="GameOverMode" parent="." unique_id=1747570121 instance=ExtResource("15_noh4w")]
+visible = false
 z_index = 11
 position = Vector2(24, 24)
 

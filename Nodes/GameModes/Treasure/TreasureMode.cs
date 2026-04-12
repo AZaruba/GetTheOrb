@@ -63,6 +63,7 @@ public partial class TreasureMode : GameMode
   {
     Visible = true;
     TreasureSprite.Visible = true;
+    ItemSprite.Material.Set("shader_parameter/replace_0", item.ItemColor);
     TreasureOpened = false;
     ItemSprite.Visible = false;
     MonsterEXP = exp;

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" format=3 uid="uid://dei2njq2bw6k8"]
+
+[ext_resource type="Script" uid="uid://bdvddgot2h104" path="res://Assets/Data/Monsters/MonsterTable.cs" id="1_u1oqu"]
+
+[resource]
+script = ExtResource("1_u1oqu")
+Monsters = null

@@ -61,6 +61,8 @@ public partial class Maingame : Node2D
   private void OnGameOver()
   {
     GameOver.Visible = true;
+    GameOver.Reset();
+    GameOver.Init();
     CurrentGameMode = GameOver;
   }
 

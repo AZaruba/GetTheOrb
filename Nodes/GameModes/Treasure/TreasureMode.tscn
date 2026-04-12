@@ -3,13 +3,45 @@
 [ext_resource type="Script" uid="uid://cwbtwa6amp56n" path="res://Nodes/GameModes/Treasure/TreasureMode.cs" id="1_j6ubd"]
 [ext_resource type="Texture2D" uid="uid://i7f5oe2np7vp" path="res://Assets/Art/UI/TreasureChest.png" id="2_d1q5i"]
 
-[node name="TreasureMode" type="Node2D" unique_id=1912899404 node_paths=PackedStringArray("TreasureSprite", "ItemSprite", "InspectLayer")]
+[sub_resource type="Shader" id="Shader_d1q5i"]
+code = "// No recolor
+
+shader_type canvas_item;
+
+
+uniform vec4 original_0: source_color;
+uniform vec4 replace_0: source_color;
+
+const float precision = 0.1;
+
+
+vec4 swap_color(vec4 color){
+	vec4 original_colors[1] = vec4[1] (original_0);
+	vec4 replace_colors[1] = vec4[1] (replace_0);
+	for (int i = 0; i < 1; i ++) {
+		if (distance(color, original_colors[i]) <= precision){
+			return replace_colors[i];
+		}
+	}
+	return color;
+}
+
+
+void fragment() {
+	COLOR = swap_color(texture(TEXTURE, UV));
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_614wd"]
+shader = SubResource("Shader_d1q5i")
+shader_parameter/original_0 = Color(1, 1, 1, 1)
+shader_parameter/replace_0 = Color(1, 1, 1, 1)
+
+[node name="TreasureMode" type="Node2D" unique_id=1912899404 node_paths=PackedStringArray("TreasureSprite", "ItemSprite")]
 z_index = 5
 texture_filter = 1
 script = ExtResource("1_j6ubd")
 TreasureSprite = NodePath("TreasureSprite")
 ItemSprite = NodePath("ItemSprite")
-InspectLayer = NodePath("")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1331960660]
 offset_left = 8.0
@@ -28,6 +60,7 @@ centered = false
 [node name="ItemSprite" type="Sprite2D" parent="." unique_id=2108802254]
 visible = false
 texture_filter = 1
+material = SubResource("ShaderMaterial_614wd")
 position = Vector2(8, 8)
 texture = ExtResource("2_d1q5i")
 centered = false

@@ -66,7 +66,8 @@ public partial class WanderMode : GameMode
       PlayerPositionY = CurrentFloor.StartingY;
       PlayerFacing = CurrentFloor.StartingDir;
       DirectionDisplay.Text = Direction.Chars[(int)PlayerFacing];
-      EventBus.Emit(EventBus.SignalName.OnLadderEncountered);
+      EventBus.Emit(EventBus.SignalName.OnLadderEncountered); // ?
+      EventBus.Emit(EventBus.SignalName.OnFloorChange, FloorIndex);
       LocationDisplay.OnFloorChange(FloorIndex);
     }
     else if (CurrentTile == DungeonTile.LADDER_UP_TILE)
@@ -79,6 +80,7 @@ public partial class WanderMode : GameMode
       PlayerFacing = CurrentFloor.StartingDir;
       DirectionDisplay.Text = Direction.Chars[(int)PlayerFacing];
       EventBus.Emit(EventBus.SignalName.OnLadderEncountered);
+      EventBus.Emit(EventBus.SignalName.OnFloorChange, FloorIndex);
       LocationDisplay.OnFloorChange(FloorIndex);
     }
     else
@@ -228,7 +230,9 @@ public partial class WanderMode : GameMode
     PlayerFacing = CurrentFloor.StartingDir;
     DirectionDisplay.Text = Direction.Chars[(int)PlayerFacing];
     LocationDisplay.OnFloorChange(0);
+    EventBus.Emit(EventBus.SignalName.OnFloorChange, FloorIndex);
     LocationDisplay.OnMove(PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
+    EventBus.Emit(EventBus.SignalName.OnPlayerMove, PlayerPositionX, PlayerPositionY, (int)PlayerFacing);
   }
 
   private void OnMove(int x, int y, int d)

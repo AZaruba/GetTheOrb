@@ -18,6 +18,8 @@ public enum DungeonSpriteFrame
   L_CLOSE_OPEN,
   C_HEALING_CIRCLE,
   R_CLOSE_OPEN,
+  // L_OPEN_OPEN?
+  // R_OPEN_OPEN?
 }
 
 public partial class Dungeon : Node2D

@@ -9,8 +9,6 @@ public static class StatFunction
     float AttackRoll = GD.Randf();
 
     AttackFit = Math.Max(AttackFit, 1);
-    GD.Print($"Rolled {AttackRoll} with AF {AttackFit} against {DefendFit}");
-    GD.Print($"Returning {AttackRoll < (float)AttackFit / (DefendFit + AttackFit)}");
     return AttackRoll < (float)AttackFit / (DefendFit + AttackFit);
   }
 
@@ -18,9 +16,10 @@ public static class StatFunction
   {
     int AttackRoll = GD.RandRange(0,AttackPower+1);
     int damage = Mathf.FloorToInt((float)AttackRoll / ((DefendGrit + 9) / 9));
+      GD.Print($"Rolled {AttackRoll} but hit for {damage}");
     if (!Player)
     {
-      GD.Print($"Rolled {AttackRoll} but hit for {damage}");
+      //GD.Print($"Rolled {AttackRoll} but hit for {damage}");
     }
     float CritRoll = GD.Randf();
     if (CritRoll < AttackWit/(AttackWit*2+3))

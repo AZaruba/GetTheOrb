@@ -11,4 +11,5 @@ public partial class Item : Resource
   [Export] public int Weight;
   [Export] public AttackType Type;
   [Export] public ItemID ID;
+  [Export] public Color ItemColor;
 }

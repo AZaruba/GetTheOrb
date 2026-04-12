@@ -23,6 +23,8 @@ public partial class FightMode : GameMode
   [Export] RichTextLabel MPDisplay;
   [Export] Player Player;
 
+  [Export] MonsterTable[] MonsterTables;
+
   private Monster CurrentMonster;
   private int MonsterCurrentHP;
 
@@ -41,11 +43,14 @@ public partial class FightMode : GameMode
   public override void _Ready()
   {
     EventBus.Instance.OnMonsterEncountered += OnMonsterEncountered;
-    CurrentMonsterTable = ResourceLoader.Load<MonsterTable>("res://Assets/Data/Monsters/FloorOneMonsterTable.tres");
+    EventBus.Instance.OnFloorChange += OnFloorChange;
+    CurrentMonsterTable = MonsterTables[0]; //ResourceLoader.Load<MonsterTable>("res://Assets/Data/Monsters/Tables/FloorOneMonsterTable.tres");
   }
   public override void _ExitTree()
   {
     EventBus.Instance.OnMonsterEncountered -= OnMonsterEncountered;
+    EventBus.Instance.OnFloorChange -= OnFloorChange;
+
   }
   public override void ProcessGameMode(double delta)
   {
@@ -269,6 +274,7 @@ public partial class FightMode : GameMode
   {
     SfxPlayer.Instance.Finished += ReleaseAudioLock;
     CurrentMonster = CurrentMonsterTable.GetMonster();
+    EnemyAttackAnimation.Visible = false;
     MonsterCurrentHP = CurrentMonster.HP;
     Direction.Text = "!";
     PlayerDelay = GD.RandRange(0, 9);
@@ -280,5 +286,11 @@ public partial class FightMode : GameMode
     EnemySprite.Texture = CurrentMonster.Sprite;
     EnemySprite.Visible = true;
     CurrentPhase = PHASE.WAITING_FOR_LOCK;
+  }
+
+  private void OnFloorChange(int newFloor)
+  {
+    GD.Print($"Swapping to table {newFloor}");
+    CurrentMonsterTable = MonsterTables[newFloor];
   }
 }
